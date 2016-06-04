@@ -6,4 +6,44 @@ ARQUITETURA
 	blabla = 20123
 	blablablae = 25123
 
+CICLOS
+	add =
+	addi =
+	and =
+	andi =
 
+	b =
+	beq =
+	beqz =
+	bgt =
+	bge =
+	bgtz =
+	blt =
+	ble =
+	blez =
+	bne =
+	bnez =
+
+	div =
+	divi =
+
+	ld =
+	li =
+
+	move =
+	mult =
+	multi =
+
+	neg =
+	not =
+
+	or =
+	ori =
+
+	sll =
+	slr =
+	st =
+	sub =
+	subi =
+
+TEXTO
