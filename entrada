@@ -1,17 +1,16 @@
 ARQUITETURA
-	blabla = 20
-	blablablae = 25
-	blabla = 254
-	blablablae = 2123
-	blabla = 20123
-	blablablae = 25123
+	somador = 20
+	multiplicador = 25
+	divisor = 254
+	busca_de_instrucoes = 2123
+	buffer_de_carga = 20123
+	buffer_de_escrita = 25123
 
 CICLOS
 	add =
 	addi =
 	and =
 	andi =
-
 	b =
 	beq =
 	beqz =
@@ -23,23 +22,17 @@ CICLOS
 	blez =
 	bne =
 	bnez =
-
 	div =
 	divi =
-
 	ld =
 	li =
-
 	move =
 	mult =
 	multi =
-
 	neg =
 	not =
-
 	or =
 	ori =
-
 	sll =
 	slr =
 	st =
@@ -47,3 +40,15 @@ CICLOS
 	subi =
 
 TEXTO
+
+	.data
+		<dados>
+	.text
+		add
+
+
+
+
+
+
+

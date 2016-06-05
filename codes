@@ -1,38 +1,31 @@
-add//
-addi//
-and//
-andi//
-
-b//
-beq//
-beqz//
-bgt//
-bge//
-bgtz//
-blt//
-ble//
-blez//
-bne//
-bnez//
-
-div//
-divi//
-
-ld//
-li//
-
-move//
-mult//
-multi//
-
-neg//
-not//
-
-or//
-ori//
-
-sll//
-slr//
-st//
-sub//
-subi//
+add		000101
+addi	100000
+and		001001
+andi	100100
+b		110000
+beq		100110
+beqz	010001
+bge		101001
+bgt		101000
+bgtz	010011
+blt		101010
+ble		101011
+blez	010100
+bne		100111
+bnez	010010
+div		001000
+divi	100011
+ld		000000
+li		010000
+move	000010
+mult	000111
+multi	100010
+neg		000011
+not		000100
+or		001010
+ori		100101
+sll		001011
+slr		001100
+st		000001
+sub		000110
+subi	100001
