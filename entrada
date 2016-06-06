@@ -1,54 +1,80 @@
 ARQUITETURA
-	somador = 20
-	multiplicador = 25
-	divisor = 254
-	busca_de_instrucoes = 2123
-	buffer_de_carga = 20123
-	buffer_de_escrita = 25123
+	somador					= 20
+	multiplicador			= 25
+	divisor					= 25444
+	busca_de_instrucoes		= 1234
+	buffer_de_carga			= 20123
+	buffer_de_escrita		= 25123
+
+
+
 
 CICLOS
-	add =
-	addi =
-	and =
-	andi =
-	b =
-	beq =
-	beqz =
-	bgt =
-	bge =
-	bgtz =
-	blt =
-	ble =
-	blez =
-	bne =
-	bnez =
-	div =
-	divi =
-	ld =
-	li =
-	move =
-	mult =
-	multi =
-	neg =
-	not =
-	or =
-	ori =
-	sll =
-	slr =
-	st =
-	sub =
-	subi =
+	add		=	5
+	addi	=	5
+	and		=	5
+	andi	=	5
+	b		=	5
+	beq		=	5
+	beqz	=	5
+	bge		=	5
+	bgt		=	5
+	bgtz	=	5
+	ble		=	5
+	blez	=	5
+	blt		=	5
+	bne		=	5
+	bnez	=	5
+	div		=	5
+	divi	=	5
+	ld		=	5
+	li		=	5
+	move	=	5
+	mult	=	5
+	multi	=	5
+	neg		=	5
+	not		=	5
+	or		=	5
+	ori		=	5
+	sll		=	5
+	slr		=	5
+	st		=	5
+	sub		=	5
+	subi	=	5
 
 TEXTO
 
 	.data
 		<dados>
 	.text
-		add
-
-
-
-
-
-
-
+		add		Rd, Rs, Rt		Rd = Rs + Rt
+		addi	Rt, Rs, Imed	Rt = Rs + Imed
+		and		Rd, Rs, Rt		Rd = Rs AND Rt
+		andi	Rt, Rs, Imed	Rt = Rs NOT Imed
+		b		label			pc = label
+		beq		Rs, Rt, label	Rs == Rt -> pc <- label
+		beqz	Rs, label		Rs == 0 -> pc <- label
+		bgt		Rs, Rt, label	Rs > Rt -> pc <- label
+		bge		Rs, Rt, label	Rs >= Rt -> pc <- label
+		bgtz	Rs, label		Rs > 0 -> pc <- label
+		blt		Rs, Rt, label	Rs < Rt -> pc <- label
+		ble		Rs, Rt, label	Rs <= Rt -> pc <- label
+		blez	Rs, label		Rs <= 0 -> pc <- label
+		bne		Rs, Rt, label	Rs != Rt -> pc <- label
+		bnez	Rs, label		Rs != 0 -> pc <- label
+		div		Rd, Rs, Rt		Rd = Rs / Rt
+		divi	Rt, Rs, Imed	Rt = Rs / Imed
+		ld		Rb, Ra			Rb = Ra
+		li		Rb, Imed		Rb = Imed
+		move	Ra, Rb			Ra = Rb
+		mult	Rd, Rs, Rt		Rd = Rs * Rt
+		multi	Rd, Rs, Imed	Rd = Rs - Imed
+		neg		Rd, Rs			Rd = -Rs
+		not		Rd, Rs			Rd = NOT Rs
+		or		Rd, Rs, Rt		Rd = Rs OR Rt
+		ori		Rd, Rs, Imed	Rd = Rs OR Imed
+		sll		Rd, Rs, Num		Rd = Rs << Num(times)
+		slr		Rd, Rs, Num		Rd = Rs >> Num(times)
+		st		Rb, Ra			Ra = Rb
+		sub		Rd, Rs, Rt		Rd = Rs - Rt
+		subi	Rt, Rs, Imed	Rt = Rs - Imed
