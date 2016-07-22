@@ -45,19 +45,49 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    OPCODE = 258,
-    REGISTER = 259,
-    LABEL = 260,
-    INSTANT = 261,
-    ARCHITECTURE = 262,
-    VALUE = 263,
-    EQUALS = 264
+    arch = 258,
+    a_sum = 259,
+    a_mul = 260,
+    a_div = 261,
+    a_bch = 262,
+    a_bes = 263,
+    a_param = 264,
+    a_bin = 265,
+    texto = 266,
+    data = 267,
+    text = 268,
+    ciclos = 269,
+    reg_l = 270,
+    reg_i = 271,
+    reg2 = 272,
+    reg2_l = 273,
+    reg2_i = 274,
+    reg3 = 275,
+    lab = 276,
+    reg = 277,
+    label = 278,
+    imed = 279,
+    comma = 280,
+    collon = 281,
+    equal = 282,
+    eol = 283
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 5 "inter.y" /* yacc.c:1909  */
+
+	char *opp, *reg, *label;
+	int value;
+
+#line 88 "inter.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
