@@ -1,5 +1,9 @@
 %{
-    #include <stdio.h>
+	int yylex();
+	void yyerror(const char *s);
+	#include "memory.h"
+	memory *mem;
+	int pc = 0;
 %}
 
 %union {
@@ -24,7 +28,7 @@
 		TEXTO EOL
 		DDATA EOL dados
 		DTEXT EOL program {
-			printf("Error\n");
+			printf("EndP\n");
 		}
 	;
 
@@ -63,43 +67,67 @@
 	text_in:
 	REG3 REG COMMA REG COMMA REG EOL {
 		printf("%s %s, %s, %s \n", $1, $2, $4, $6);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	}
 	| REG2 REG COMMA REG COMMA EOL {
-		printf("%s %s, %s, %s \n", $1, $2, $4);
+		printf("%s %s, %s \n", $1, $2, $4);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	}
 	| REG2_I REG COMMA REG COMMA CIFRAO VALUE EOL {
 		printf("%s %s, %s, %d \n", $1, $2, $4, $7);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	}
 	| REG2_L REG COMMA REG COMMA LABEL EOL {
 		printf("%s %s, %s, %s \n", $1, $2, $4, $6);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	}
 	| REG_I REG COMMA CIFRAO VALUE EOL {
 		printf("%s %s, %d \n", $1, $2, $5);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	}
 	| REG_I REG COMMA LABEL EOL {
-		printf("%s %s, %d \n", $1, $2, $4);
+		printf("%s %s, %s \n", $1, $2, $4);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	}
 	| LAB LABEL EOL {
 		printf("%s %s \n", $1, $2);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	};
 
 	l:
 	LABEL COLLON EOL {
 		printf("%s:\n", $1);
+		printf("%d", pc);
+		set_opcode($1, mem, pc);
+		pc++;
 	};
 
-	program:
-	l text_in program
-	| text_in program
-	| {
+	program: {
 		printf(".text\t\t[OK]\n");
-	};
+	}
+	| l text_in program
+	| text_in program;
 
 %%
 
-yyerror(){}
+void yyerror(const char *s){}
 
 int main(int argc, char **argv) {
+	initialize_mem(mem);
 	yyparse();
 }
 
@@ -136,37 +164,4 @@ int main(int argc, char **argv) {
 		st		Rb, Ra						Ra = Rb
 		sub		Rd, Rs, Rt					Rd = Rs - Rt
 		subi	Rt, Rs, Imed				Rt = Rs - Imed
-
-
-000101
-100000
-001001
-100100
-110000
-100110
-010001
-101001
-101000
-010011
-101011
-010100
-101010
-100111
-010010
-001000
-100011
-000000
-010000
-000010
-000111
-100010
-000011
-000100
-001010
-100101
-001011
-001100
-000001
-000110
-100001
 */

@@ -1,32 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "memory.h"
 
-typedef struct cells {
-	int bit;
-} Cell;
-
-typedef struct memory {
-	struct *cell;
-} Memory;
-
-void left_shift() {
+void left_shift(memory *mem) {
 
 }
 
-void right_shitf() {
+void right_shift(memory *mem) {
 
 }
 
-void set_memsize(Memory *m) {
-	do {
-		int size;
-		printf("Enter the size of the system memory (Use MB(MegaBytes)): ");
-		scanf("%d", &size);
-		if(size <= 0)
-		m -> cell = malloc(sizeof(Cell) * (size * 1048576));
-		if(size <= 0)
-			printf("Please enter a value bigger than one (1)\n");
-	} while(size <= 0);
+void initialize_mem(memory *mem) {
+	mem -> data = (char**) malloc(MEMSIZE * sizeof(char));
+	for (int i = 0; i < MEMSIZE; i++) {
+		mem -> data[i] = (char*) calloc(32, sizeof(char));
+	}
+	mem -> size = MEMSIZE;
 }
 
+void set_opcode(char *opcode, memory *mem, int pos) {
+	strcat(mem -> data[pos], opcode);
+	printf("%s\n", mem -> data[pos]);
+}

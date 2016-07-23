@@ -67,6 +67,7 @@ TEXTO
 		bgtz   r1,     label
 		blt    r1,     R2,      label
 		ble    r1,     R2,      label
+	onemorelabe:
 		blez   r1,     label
 		bne    r1,     R2,      label
 		bnez   r1,     label
