@@ -45,71 +45,44 @@ CICLOS
 
 
 TEXTO
-
 	.data
-		<dados>
+		.int 10
+		.int 32940
+		.int 10
+		.int 32940
+		.int 2
+		.int 10
+		.int 255
 	.text
-		add		Rd, Rs, Rt					Rd = Rs + Rt
-		addi	Rt, Rs, Imed				Rt = Rs + Imed
-		and		Rd, Rs, Rt					Rd = Rs AND Rt
-		andi	Rt, Rs, Imed				Rt = Rs NOT Imed
-		b		label						pc = label
-		beq		Rs, Rt, label				Rs == Rt -> pc <- label
-		beqz	Rs, label					Rs == 0 -> pc <- label
-		bgt		Rs, Rt, label				Rs > Rt -> pc <- label
-		bge		Rs, Rt, label				Rs >= Rt -> pc <- label
-		bgtz	Rs, label					Rs > 0 -> pc <- label
-		blt		Rs, Rt, label				Rs < Rt -> pc <- label
-		ble		Rs, Rt, label				Rs <= Rt -> pc <- label
-		blez	Rs, label					Rs <= 0 -> pc <- label
-		bne		Rs, Rt, label				Rs != Rt -> pc <- label
-		bnez	Rs, label					Rs != 0 -> pc <- label
-		div		Rd, Rs, Rt					Rd = Rs / Rt
-		divi	Rt, Rs, Imed				Rt = Rs / Imed
-		ld		Rb, Ra						Rb = Ra
-		li		Rb, Imed					Rb = Imed
-		move	Ra, Rb						Ra = Rb
-		mult	Rd, Rs, Rt					Rd = Rs * Rt
-		multi	Rd, Rs, Imed				Rd = Rs - Imed
-		neg		Rd, Rs						Rd = -Rs
-		not		Rd, Rs						Rd = NOT Rs
-		or		Rd, Rs, Rt					Rd = Rs OR Rt
-		ori		Rd, Rs, Imed				Rd = Rs OR Imed
-		sll		Rd, Rs, Num					Rd = Rs << Num(times)
-		slr		Rd, Rs, Num					Rd = Rs >> Num(times)
-		st		Rb, Ra						Ra = Rb
-		sub		Rd, Rs, Rt					Rd = Rs - Rt
-		subi	Rt, Rs, Imed				Rt = Rs - Imed
-
-
-000101
-100000
-001001
-100100
-110000
-100110
-010001
-101001
-101000
-010011
-101011
-010100
-101010
-100111
-010010
-001000
-100011
-000000
-010000
-000010
-000111
-100010
-000011
-000100
-001010
-100101
-001011
-001100
-000001
-000110
-100001
+	label:
+		add    r1,     r10,     r20
+		addi   R1,     R10,     $-1
+		and    R1,     R2,      R3
+		andi   R2,     R10,     $10
+		b      label
+		beq    r1,     R2,      label
+		beqz   r1,     label
+		bgt    r1,     R2,      label
+		bge    r1,     R2,      label
+		bgtz   r1,     label
+		blt    r1,     R2,      label
+		ble    r1,     R2,      label
+		blez   r1,     label
+		bne    r1,     R2,      label
+		bnez   r1,     label
+		div    R12,    r1,      R3
+		divi   R2,     r1,      $10
+		ld     r10,    r2
+		li     r10,    $10
+		move   r2,     r10
+		mult   R12,    r1,      R2
+		multi  R12,    r1,      $10
+		neg    R12,    r1
+		not    R12,    r1
+		or     R12,    r1,      R2
+		ori    R12,    r1,      $10
+		sll    R12,    r1,      R2
+		slr    R12,    r1,      r2
+		st     r10,    r2
+		sub    R12,    r1,      R2
+		subi   R2,     r1,      $10

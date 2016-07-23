@@ -3,9 +3,6 @@ all: clean assembly
 clean:
 	rm -f *.o *.gch *.stackdump *.exe inter.tab.c inter.tab.h interpreter
 
-object:
-	gcc -c memory.c -lm -Wall -std=c99
-
 assembly: clean inter.y inter.l
 	bison -d inter.y
 	flex inter.l

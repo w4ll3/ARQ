@@ -67,7 +67,14 @@
 
 //all: program;
 
-all:  ignoreblankline ARQUITETURA ignoreblankline architecture ignoreblankline CICLOS ignoreblankline cycles ignoreblankline TEXTO ignoreblankline DOTDATA ignoreblankline progdata ignoreblankline DOTTEXT ignoreblankline program;
+all:  ignoreblankline ARQUITETURA ignoreblankline
+	architecture ignoreblankline
+	CICLOS ignoreblankline
+	cycles ignoreblankline
+	TEXTO ignoreblankline
+	DOTDATA ignoreblankline
+	progdata ignoreblankline
+	DOTTEXT ignoreblankline program;
 
 
 architecture: SOMADOR EQUAL VALUE EOL
