@@ -1,13 +1,14 @@
 ARQUITETURA
-somador	= 20
-multiplicador = 25
-divisor	= 25444
-busca_de_instrucoes	= 1234
-buffer_de_carga	= 20123
-buffer_de_escrita = 25123
-
-
-
+somador				=	20
+multiplicador		=	25
+divisor				=	25444
+busca_de_instrucoes	=	1234
+buffer_de_carga		=	20123
+buffer_de_escrita	=	25123
+re_sum				=	4
+re_sub				=	4
+re_div				=	4
+re_mul				=	4
 
 CICLOS
 	add		=	5

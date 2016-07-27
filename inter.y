@@ -1,6 +1,4 @@
 %{
-	int yylex();
-	void yyerror(const char *s);
 	#include "memory.h"
 	memory *mem;
 	int pc = 0;
@@ -11,7 +9,7 @@
 	int value;
 };
 
-%token ARCH A_SUM A_MUL A_DIV A_BIN A_BCH A_BES VALUE
+%token ARCH A_SUM A_MUL A_DIV A_BIN A_BCH A_BES VALUE RE_SUM RE_SUB RE_DIV RE_MUL
 %token TEXTO DDATA DTEXT
 %token CICLOS REG_I REG2 REG2_L REG2_I REG3 LAB CIFRAO
 %token REG LABEL COMMA COLLON EQUAL EOL TYPE
@@ -38,7 +36,11 @@
 	A_DIV EQUAL VALUE EOL
 	A_BIN EQUAL VALUE EOL
 	A_BCH EQUAL VALUE EOL
-	A_BES EQUAL VALUE EOL {
+	A_BES EQUAL VALUE EOL
+	RE_SUM EQUAL VALUE EOL
+	RE_SUB EQUAL VALUE EOL
+	RE_DIV EQUAL VALUE EOL
+	RE_MUL EQUAL VALUE EOL {
 		printf("Architecture\t[OK]\n");
 	};
 
@@ -66,53 +68,44 @@
 
 	text_in:
 	REG3 REG COMMA REG COMMA REG EOL {
-		printf("%s %s, %s, %s \n", $1, $2, $4, $6);
-		printf("%d", pc);
+		printf("[%0.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
 		set_opcode($1, mem, pc);
 		pc++;
 	}
 	| REG2 REG COMMA REG COMMA EOL {
-		printf("%s %s, %s \n", $1, $2, $4);
-		printf("%d", pc);
+		printf("[%0.3d]  %s %s, %s \n", pc, $1, $2, $4);
 		set_opcode($1, mem, pc);
 		pc++;
 	}
 	| REG2_I REG COMMA REG COMMA CIFRAO VALUE EOL {
-		printf("%s %s, %s, %d \n", $1, $2, $4, $7);
-		printf("%d", pc);
+		printf("[%0.3d]  %s %s, %s, %d\n", pc, $1, $2, $4, $7);
 		set_opcode($1, mem, pc);
 		pc++;
 	}
 	| REG2_L REG COMMA REG COMMA LABEL EOL {
-		printf("%s %s, %s, %s \n", $1, $2, $4, $6);
-		printf("%d", pc);
+		printf("[%0.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
 		set_opcode($1, mem, pc);
 		pc++;
 	}
 	| REG_I REG COMMA CIFRAO VALUE EOL {
-		printf("%s %s, %d \n", $1, $2, $5);
-		printf("%d", pc);
+		printf("[%0.3d]  %s %s, %d\n", pc, $1, $2, $5);
 		set_opcode($1, mem, pc);
 		pc++;
 	}
 	| REG_I REG COMMA LABEL EOL {
-		printf("%s %s, %s \n", $1, $2, $4);
-		printf("%d", pc);
+		printf("[%0.3d]  %s %s, %s \n", pc, $1, $2, $4);
 		set_opcode($1, mem, pc);
 		pc++;
 	}
 	| LAB LABEL EOL {
-		printf("%s %s \n", $1, $2);
-		printf("%d", pc);
+		printf("[%0.3d]  %s %s \n", pc, $1, $2);
 		set_opcode($1, mem, pc);
 		pc++;
 	};
 
 	l:
 	LABEL COLLON EOL {
-		printf("%s:\n", $1);
-		printf("%d", pc);
-		set_opcode($1, mem, pc);
+		printf("[%0.3d]  %s:\n", pc, $1);
 		pc++;
 	};
 
@@ -124,7 +117,7 @@
 
 %%
 
-void yyerror(const char *s){}
+yyerror(){}
 
 int main(int argc, char **argv) {
 	initialize_mem(mem);

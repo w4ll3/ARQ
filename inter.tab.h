@@ -53,24 +53,28 @@ extern int yydebug;
     A_BCH = 263,
     A_BES = 264,
     VALUE = 265,
-    TEXTO = 266,
-    DDATA = 267,
-    DTEXT = 268,
-    CICLOS = 269,
-    REG_I = 270,
-    REG2 = 271,
-    REG2_L = 272,
-    REG2_I = 273,
-    REG3 = 274,
-    LAB = 275,
-    CIFRAO = 276,
-    REG = 277,
-    LABEL = 278,
-    COMMA = 279,
-    COLLON = 280,
-    EQUAL = 281,
-    EOL = 282,
-    TYPE = 283
+    RE_SUM = 266,
+    RE_SUB = 267,
+    RE_DIV = 268,
+    RE_MUL = 269,
+    TEXTO = 270,
+    DDATA = 271,
+    DTEXT = 272,
+    CICLOS = 273,
+    REG_I = 274,
+    REG2 = 275,
+    REG2_L = 276,
+    REG2_I = 277,
+    REG3 = 278,
+    LAB = 279,
+    CIFRAO = 280,
+    REG = 281,
+    LABEL = 282,
+    COMMA = 283,
+    COLLON = 284,
+    EQUAL = 285,
+    EOL = 286,
+    TYPE = 287
   };
 #endif
 
@@ -79,12 +83,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 9 "inter.y" /* yacc.c:1909  */
+#line 7 "inter.y" /* yacc.c:1909  */
 
 	char *opp, *reg, *label;
 	int value;
 
-#line 88 "inter.tab.h" /* yacc.c:1909  */
+#line 92 "inter.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

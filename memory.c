@@ -14,9 +14,8 @@ void initialize_mem(memory *mem) {
 		mem -> data[i] = (char*) calloc(32, sizeof(char));
 	}
 	mem -> size = MEMSIZE;
+	printf("Successfully allocated %d MB of memory.\n", mem -> size);
 }
 
 void set_opcode(char *opcode, memory *mem, int pos) {
-	strcat(mem -> data[pos], opcode);
-	printf("%s\n", mem -> data[pos]);
 }
