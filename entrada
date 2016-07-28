@@ -9,8 +9,9 @@ re_sum				=	4
 re_sub				=	4
 re_div				=	4
 re_mul				=	4
-
+mem_size			=	1024
 CICLOS
+
 	add		=	5
 	addi	=	5
 	and		=	5

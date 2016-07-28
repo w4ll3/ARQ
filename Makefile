@@ -6,5 +6,5 @@ clean:
 assembly: clean inter.y inter.l memory.c
 	bison -d inter.y
 	flex inter.l
-	cc -o $@ inter.tab.c lex.yy.c memory.c -lfl
-	./assembly.exe < entrada
+	cc -o $@ inter.tab.c lex.yy.c memory.c line.c register.c -lfl
+	./assembly < entrada

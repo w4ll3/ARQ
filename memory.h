@@ -6,12 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
+typedef struct memory {
 	char **data;
 	int size;
 } memory;
 
-void initialize_mem(memory *mem);
+memory *initialize_mem(int size);
 
 void set_opcode(char *opcode, memory *mem, int pos);
 
@@ -23,5 +23,6 @@ void right_shift(memory *mem);
 
 void left_shift(memory *mem);
 
+void set_format1();
 
 #endif
