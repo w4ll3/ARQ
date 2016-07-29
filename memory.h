@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "utils.h"
 
 typedef struct memory {
 	char **data;
@@ -13,16 +14,12 @@ typedef struct memory {
 
 memory *initialize_mem(int size);
 
-void set_opcode(char *opcode, memory *mem, int pos);
+void print_mem(memory mem);
 
-// void dec_to_bin();
-//
-// void bin_to_dec();
+void copy(memory *mem, char *str, int mbeggin, int mend, int pos, int sbeggin);
 
-void right_shift(memory *mem);
+void set_address(list *llist, list *olist, int lcount, int ocount, memory *mem);
 
-void left_shift(memory *mem);
-
-void set_format1();
+char *decimal_to_binary(int n);
 
 #endif

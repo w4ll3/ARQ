@@ -1,21 +1,25 @@
 #include "utils.h"
 
 list *initialize_list() {
-	list *llist = (list*) malloc(sizeof(list));
-	return llist;
+	list *ilist = (list*) malloc(sizeof(list));
+	return ilist;
 }
 
-void insert_list(list *llist, char *label, int laddress, int *lcount) {
-	llist[*lcount].label = label;
-	llist[*lcount].laddress = laddress;
-	*lcount += 1;
-	llist = (list*) realloc(llist, *lcount * 2);
+
+
+void insert_list(list *ilist, char *label, int address, int *size) {
+	ilist[*size].label = label;
+	ilist[*size].address = address;
+	*size += 1;
+
+	if((*size % 2) == 0)
+		ilist = (list*) realloc(ilist, (*size) * 2);
 }
 
-void show_list(list *llist, int size) {
+void show_list(list *ilist, int size) {
 	int i = 0;
 	while(i < size) {
-		printf("[%s]  [%d]\n", llist[i].label, llist[i].laddress);
+		printf("[%s]  [%d]\n", ilist[i].label, ilist[i].address);
 		i++;
 	}
 	printf("\n");

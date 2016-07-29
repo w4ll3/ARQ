@@ -3,11 +3,11 @@
 	#include "utils.h"
 
 	memory *mem;
-	list *llist;
+	list *llist, *olist;
 
 	int pc = 0;
 	int lcount = 0;
-	int olcount = 0;
+	int ocount = 0;
 %}
 
 %union {
@@ -32,7 +32,9 @@
 		TEXTO EOL
 		DDATA EOL dados
 		DTEXT EOL program {
-			printf(".text\t\t[OK]");
+			printf(".text\t\t[OK]\n");
+			show_list(llist, lcount);
+			show_list(olist, ocount);
 		}
 	;
 
@@ -80,37 +82,40 @@
 	text_in:
 		REG3 REG COMMA REG COMMA REG EOL {
 			printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
-			set_opcode($1, mem, pc);
+			copy(mem, $1, 0, 5, pc, 0);
 			pc++;
 		}
 		| REG2 REG COMMA REG EOL {
 			printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
-			set_opcode($1, mem, pc);
+			copy(mem, $1, 0, 5, pc, 0);
 			pc++;
 		}
 		| REG2_I REG COMMA REG COMMA CIFRAO VALUE EOL {
 			printf("[%.3d]  %s %s, %s, %d\n", pc, $1, $2, $4, $7);
-			set_opcode($1, mem, pc);
-			pc++;
-		}
-		| REG2_L REG COMMA REG COMMA LABEL EOL {
-			printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
-			set_opcode($1, mem, pc);
+			copy(mem, $1, 0, 5, pc, 0);
 			pc++;
 		}
 		| REG_I REG COMMA CIFRAO VALUE EOL {
 			printf("[%.3d]  %s %s, %d\n", pc, $1, $2, $5);
-			set_opcode($1, mem, pc);
+			copy(mem, $1, 0, 5, pc, 0);
+			pc++;
+		}
+		| REG2_L REG COMMA REG COMMA LABEL EOL {
+			printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
+			copy(mem, $1, 0, 5, pc, 0);
+			insert_list(olist, $6, pc, &ocount);
 			pc++;
 		}
 		| REG_I REG COMMA LABEL EOL {
 			printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
-			set_opcode($1, mem, pc);
+			copy(mem, $1, 0, 5, pc, 0);
+			insert_list(olist, $4, pc, &ocount);
 			pc++;
 		}
 		| LAB LABEL EOL {
 			printf("[%.3d]  %s %s \n", pc, $1, $2);
-			set_opcode($1, mem, pc);
+			copy(mem, $1, 0, 5, pc, 0);
+			insert_list(olist, $2, pc, &ocount);
 			pc++;
 		}
 	;
@@ -134,6 +139,7 @@ yyerror(){};
 
 int main(int argc, char **argv) {
 	llist = initialize_list();
+	olist = initialize_list();
 	yyparse();
 	return 0;
 }

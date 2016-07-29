@@ -6,13 +6,13 @@
 
 typedef struct list {
 	char *label;
-	int laddress;
+	int address;
 } list;
 
 list *initialize_list();
 
-void insert_list(list *llist, char *label, int laddress, int *lcount);
+void insert_list(list *ilist, char *label, int address, int *size);
 
-void show_list(list *llist, int size);
+void show_list(list *ilist, int size);
 
 #endif
