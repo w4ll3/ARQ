@@ -11,57 +11,53 @@ memory *initialize_mem(int size) {
 }
 
 void print_mem(memory mem) {
-	int d = 0;
-	for (size_t i = 0; i < mem.size; i++) {
-		if(strcmp(mem.data[i], "0000000000000000000000000000000") == 0) {
-			d++;
-		} else {
-			printf("%s\n", mem.data[i]);
+	for (size_t i = 0; i < 30; i++) {
+		for (size_t j = 0; j < 32; j++)
+			printf("%4d", j);
+		printf("\n");
+		for (size_t j = 0; j < 32; j++) {
+			if(mem.data[i][j] == '\0') {
+				printf("%4c", '9');
+			} else {
+				printf("%4c", mem.data[i][j]);
+			}
 		}
+		printf("\n");
 	}
-	printf("%d blank lines.\n", d);
 }
 
 void copy(memory *mem, char *str, int mbeggin, int mend, int pos, int sbeggin) {
-	for (int i = mbeggin, j = sbeggin; i < mend; i++, j++) {
+	for (int i = mbeggin, j = sbeggin; i <= mend; i++, j++) {
 		mem -> data[pos][i] = str[j];
 	}
+	printf("\n");
 }
 
 void set_address(list *llist, list *olist, int lcount, int ocount, memory *mem) {
 	for (int i = 0; i < ocount; i++) {
 		for (int k = 0; k < lcount; k++) {
-			if(strcmp(llist[k].label, olist[i].label) == 0) {
+			if(strcmp(olist[i].label, llist[k].label) == 0) {
 				switch(mem -> data[olist[i].address][0]) {
 					case '0': {
-						switch(mem -> data[olist[i].address][1]) {
-
-							case '1': {
-								copy(mem, decimal_to_binary(llist[k].address), 11, 31, olist[i].address, 0);
-								break;
-							}
+						if(mem -> data[olist[i].address][1]) {
+							copy(mem, decimal_to_binary(llist[k].address), 11, 31, olist[i].address, 0);
 						}
 						break;
 					}
 
 					case '1': {
-						switch(mem -> data[olist[i].address][1]) {
-
-							case '0': {
-								copy(mem, decimal_to_binary(llist[k].address), 16, 31, olist[i].address, 0);
-								break;
-							}
-
-							case '1': {
-								copy(mem, decimal_to_binary(llist[k].address), 6, 31, olist[i].address, 0);
-								break;
-							}
+						if(mem -> data[olist[i].address][1] == '0') {
+							copy(mem, decimal_to_binary(llist[k].address), 17, 31, olist[i].address, 0);
+							break;
+						} else if (mem -> data[olist[i].address][1] == '1') {
+							copy(mem, decimal_to_binary(llist[k].address), 6, 31, olist[i].address, 0);
+							break;
 						}
 						break;
 					}
 				}
 			} else {
-				printf("\nInstruction calls inexistent label.\n");
+			printf("\nInstruction calls inexistent label.\n");
 			}
 		}
 	}
