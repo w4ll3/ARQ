@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct list {
 	char *label;
@@ -10,6 +11,8 @@ typedef struct list {
 } list;
 
 list *initialize_list();
+
+list *mylloc(list *ilist, int size, int count);
 
 void insert_list(list *ilist, char *label, int address, int *size);
 

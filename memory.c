@@ -11,12 +11,20 @@ memory *initialize_mem(int size) {
 }
 
 void print_mem(memory mem) {
-
+	int d = 0;
+	for (size_t i = 0; i < mem.size; i++) {
+		if(strcmp(mem.data[i], "0000000000000000000000000000000") == 0) {
+			d++;
+		} else {
+			printf("%s\n", mem.data[i]);
+		}
+	}
+	printf("%d blank lines.\n", d);
 }
 
 void copy(memory *mem, char *str, int mbeggin, int mend, int pos, int sbeggin) {
 	for (int i = mbeggin, j = sbeggin; i < mend; i++, j++) {
-		mem -> data[pos][i] = str[j] - 48;
+		mem -> data[pos][i] = str[j];
 	}
 }
 
