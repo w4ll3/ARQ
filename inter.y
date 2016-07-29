@@ -1,19 +1,13 @@
 %{
-	int yylex();
-	void yyerror(const char *s);
-
 	#include "memory.h"
-
-	typedef struct llist {
-		char *label, *address;
-	} llist;
+	#include "utils.h"
 
 	memory *mem;
-	llist *list = (llist*) malloc(sizeof(llist*));
-	list -> label = (char*) malloc(sizeof(char*));
-	list -> address = (char*) malloc(sizeof(char*));
+	list *llist;
 
 	int pc = 0;
+	int lcount = 0;
+	int olcount = 0;
 %}
 
 %union {
@@ -38,104 +32,110 @@
 		TEXTO EOL
 		DDATA EOL dados
 		DTEXT EOL program {
-			printf("EndP\n");
+			printf(".text\t\t[OK]");
 		}
 	;
 
 	set_arch:
-	A_SUM EQUAL VALUE EOL
-	A_MUL EQUAL VALUE EOL
-	A_DIV EQUAL VALUE EOL
-	A_BIN EQUAL VALUE EOL
-	A_BCH EQUAL VALUE EOL
-	A_BES EQUAL VALUE EOL
-	RE_SUM EQUAL VALUE EOL
-	RE_SUB EQUAL VALUE EOL
-	RE_DIV EQUAL VALUE EOL
-	RE_MUL EQUAL VALUE EOL
-	MEM_SIZE EQUAL VALUE EOL {
-		mem = initialize_mem($43);
-		printf("Architecture\t[OK]\n");
-	};
+		A_SUM EQUAL VALUE EOL
+		A_MUL EQUAL VALUE EOL
+		A_DIV EQUAL VALUE EOL
+		A_BIN EQUAL VALUE EOL
+		A_BCH EQUAL VALUE EOL
+		A_BES EQUAL VALUE EOL
+		RE_SUM EQUAL VALUE EOL
+		RE_SUB EQUAL VALUE EOL
+		RE_DIV EQUAL VALUE EOL
+		RE_MUL EQUAL VALUE EOL
+		MEM_SIZE EQUAL VALUE EOL {
+			mem = initialize_mem($43);
+			printf("Architecture\t[OK]\n");
+		}
+	;
 
 	inst:
-	REG3 | REG2 | REG2_I | REG2_L | REG_I | LAB
+		REG3 | REG2 | REG2_I | REG2_L | REG_I | LAB
 	;
 
 	set_cicles:
-	inst
-	EQUAL VALUE EOL
-	set_cicles {
+		inst
+		EQUAL VALUE EOL
+		set_cicles {
 
-	}
-	| {
-		printf("Cicles\t\t[OK]\n");
-	};
+		}
+		| {
+			printf("Cicles\t\t[OK]\n");
+		}
+	;
 
 	dados:
-	TYPE VALUE EOL dados {
+		TYPE VALUE EOL dados {
 
-	}
-	| {
-		printf(".data\t\t[OK]\n");
-	};
+		}
+		| {
+			printf(".data\t\t[OK]\n");
+		}
+	;
 
 	text_in:
-	REG3 REG COMMA REG COMMA REG EOL {
-		printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
-		set_opcode($1, mem, pc);
-		pc++;
-	}
-	| REG2 REG COMMA REG COMMA EOL {
-		printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
-		set_opcode($1, mem, pc);
-		pc++;
-	}
-	| REG2_I REG COMMA REG COMMA CIFRAO VALUE EOL {
-		printf("[%.3d]  %s %s, %s, %d\n", pc, $1, $2, $4, $7);
-		set_opcode($1, mem, pc);
-		pc++;
-	}
-	| REG2_L REG COMMA REG COMMA LABEL EOL {
-		printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
-		set_opcode($1, mem, pc);
-		pc++;
-	}
-	| REG_I REG COMMA CIFRAO VALUE EOL {
-		printf("[%.3d]  %s %s, %d\n", pc, $1, $2, $5);
-		set_opcode($1, mem, pc);
-		pc++;
-	}
-	| REG_I REG COMMA LABEL EOL {
-		printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
-		set_opcode($1, mem, pc);
-		pc++;
-	}
-	| LAB LABEL EOL {
-		printf("[%.3d]  %s %s \n", pc, $1, $2);
-		set_opcode($1, mem, pc);
-		pc++;
-	};
+		REG3 REG COMMA REG COMMA REG EOL {
+			printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
+			set_opcode($1, mem, pc);
+			pc++;
+		}
+		| REG2 REG COMMA REG EOL {
+			printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
+			set_opcode($1, mem, pc);
+			pc++;
+		}
+		| REG2_I REG COMMA REG COMMA CIFRAO VALUE EOL {
+			printf("[%.3d]  %s %s, %s, %d\n", pc, $1, $2, $4, $7);
+			set_opcode($1, mem, pc);
+			pc++;
+		}
+		| REG2_L REG COMMA REG COMMA LABEL EOL {
+			printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
+			set_opcode($1, mem, pc);
+			pc++;
+		}
+		| REG_I REG COMMA CIFRAO VALUE EOL {
+			printf("[%.3d]  %s %s, %d\n", pc, $1, $2, $5);
+			set_opcode($1, mem, pc);
+			pc++;
+		}
+		| REG_I REG COMMA LABEL EOL {
+			printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
+			set_opcode($1, mem, pc);
+			pc++;
+		}
+		| LAB LABEL EOL {
+			printf("[%.3d]  %s %s \n", pc, $1, $2);
+			set_opcode($1, mem, pc);
+			pc++;
+		}
+	;
 
 	l:
-	LABEL COLLON EOL {
-		printf("[%.3d]  %s:\n", pc, $1);
-		list -> label = $1;
-		list -> address = mem -> data[pos];
-		list = realloc(list, sizeof(list * 2));
-		pc++;
-	};
+		LABEL COLLON EOL {
+			printf("[%.3d]  %s:\n", pc, $1);
+			insert_list(llist, $1, pc, &lcount);
+			pc++;
+		}
+	;
 
 	program:
-	| l text_in program
-	| text_in program;
+		| l text_in program
+		| text_in program
+	;
 
 %%
 
-void yyerror(const char *s){};
+yyerror(){};
 
 int main(int argc, char **argv) {
+	llist = initialize_list();
 	yyparse();
+	return 0;
 }
 
 /*

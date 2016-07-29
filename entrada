@@ -57,8 +57,8 @@ TEXTO
 		.int 255
 	.text
 	label:
+	addi   R1,     R10,     $-1
 		add    r1,     r10,     r20
-		addi   R1,     R10,     $-1
 		and    R1,     R2,      R3
 		andi   R2,     R10,     $10
 		b      label

@@ -41,7 +41,7 @@
 "sub"						{	yylval.opp = "000110";			return REG3;	}
 "slr"						{	yylval.opp = "001100";			return REG3;	}
 "ori"						{	yylval.opp = "100101";			return REG2_I;	}
-"sll"						{	yylval.opp = "001011";			return REG2_I;	}
+"sll"						{	yylval.opp = "001011";			return REG3;	}
 "beq"						{	yylval.opp = "100110";			return REG2_L;	}
 "bge"						{	yylval.opp = "101001";			return REG2_L;	}
 "bgt"						{	yylval.opp = "101000";			return REG2_L;	}
@@ -54,7 +54,7 @@
 "ld"						{	yylval.opp = "000000";			return REG2;	}
 "li"						{	yylval.opp = "010000";			return REG_I;	}
 "or"						{	yylval.opp = "001010";			return REG3;	}
-"st"						{	yylval.opp = "000001";			return REG3;	}
+"st"						{	yylval.opp = "000001";			return REG2;	}
 "b"							{	yylval.opp = "110000";			return LAB;		}
 
 "="							{					return EQUAL;					}

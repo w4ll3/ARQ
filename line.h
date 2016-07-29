@@ -1,6 +1,8 @@
 #ifndef LINE_H_
 #define LINE_H_
 
+#include <stdlib.h>
+
 typedef struct structure {
 	int key;
 	char *data;
