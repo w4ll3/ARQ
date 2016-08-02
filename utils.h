@@ -12,10 +12,10 @@ typedef struct list {
 
 list *initialize_list();
 
-list *mylloc(list *ilist, int size, int count);
-
 void insert_list(list *ilist, char *label, int address, int *size);
 
 void show_list(list *ilist, int size);
+
+char *decimal_to_binary(int n);
 
 #endif

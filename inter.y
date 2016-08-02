@@ -1,11 +1,15 @@
 %{
 	#include "memory.h"
 	#include "utils.h"
+	#include "register.h"
+	#include "processor.h"
+	#include "line.h"
 
 	memory *mem;
 	list *llist, *olist;
+	line *iline;
 
-	int pc = 0;
+	int ic = 0;
 	int lcount = 0;
 	int ocount = 0;
 %}
@@ -32,7 +36,7 @@
 		TEXTO EOL
 		DDATA EOL dados
 		DTEXT EOL program {
-			printf(".text\t\t[OK]\n");
+			printf("Text\t\t[OK]\n");
 		}
 	;
 
@@ -49,6 +53,7 @@
 		RE_MUL EQUAL VALUE EOL
 		MEM_SIZE EQUAL VALUE EOL {
 			mem = initialize_mem($43);
+			search = $15;
 			printf("Architecture\t[OK]\n");
 		}
 	;
@@ -72,56 +77,59 @@
 		TYPE VALUE EOL dados {
 
 		}
-		| {
-			printf(".data\t\t[OK]\n");
-		}
+		|
 	;
 
 	text_in:
 		REG3 REG COMMA REG COMMA REG EOL {
-			printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
-			copy(mem, $1, 0, 5, pc, 0);
-			pc++;
+			copy(mem, $1, 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register($2)) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register($4)) - 1), 11, 15, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register($6)) - 1), 16, 21, mem -> size - ic - 1, 27);
+			ic++;
 		}
 		| REG2 REG COMMA REG EOL {
-			printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
-			copy(mem, $1, 0, 5, pc, 0);
-			pc++;
+			copy(mem, $1, 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register($2)) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register($4)) - 1), 11, 15, mem -> size - ic - 1, 27);
+			ic++;
 		}
 		| REG2_I REG COMMA REG COMMA CIFRAO VALUE EOL {
-			printf("[%.3d]  %s %s, %s, %d\n", pc, $1, $2, $4, $7);
-			copy(mem, $1, 0, 5, pc, 0);
-			pc++;
+			copy(mem, $1, 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register($2)) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register($4)) - 1), 11, 15, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary($7), 16, 31, mem -> size - ic - 1, 16);
+			ic++;
 		}
 		| REG_I REG COMMA CIFRAO VALUE EOL {
-			printf("[%.3d]  %s %s, %d\n", pc, $1, $2, $5);
-			copy(mem, $1, 0, 5, pc, 0);
-			pc++;
+			copy(mem, $1, 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register($2)) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary($5), 11, 31, mem -> size - ic - 1, 11);
+			ic++;
 		}
 		| REG2_L REG COMMA REG COMMA LABEL EOL {
-			printf("[%.3d]  %s %s, %s, %s \n", pc, $1, $2, $4, $6);
-			copy(mem, $1, 0, 5, pc, 0);
-			insert_list(olist, $6, pc, &ocount);
-			pc++;
+			copy(mem, $1, 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register($2)) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register($4)) - 1), 11, 15, mem -> size - ic - 1, 27);
+			insert_list(olist, $6, mem -> size - ic - 1, &ocount);
+			ic++;
 		}
 		| REG_I REG COMMA LABEL EOL {
-			printf("[%.3d]  %s %s, %s \n", pc, $1, $2, $4);
-			copy(mem, $1, 0, 5, pc, 0);
-			insert_list(olist, $4, pc, &ocount);
-			pc++;
+			copy(mem, $1, 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register($2)) - 1), 6, 10, mem -> size - ic - 1, 27);
+			insert_list(olist, $4, mem -> size - ic - 1, &ocount);
+			ic++;
 		}
 		| LAB LABEL EOL {
-			printf("[%.3d]  %s %s \n", pc, $1, $2);
-			copy(mem, $1, 0, 5, pc, 0);
-			insert_list(olist, $2, pc, &ocount);
-			pc++;
+			copy(mem, $1, 0, 5, mem -> size - ic - 1, 0);
+			insert_list(olist, $2, mem -> size - ic - 1, &ocount);
+			ic++;
 		}
 	;
 
 	l:
 		LABEL COLLON EOL {
-			printf("[%.3d]  %s:\n", pc, $1);
-			insert_list(llist, $1, pc, &lcount);
+			insert_list(llist, $1, mem -> size - ic - 1, &lcount);
 		}
 	;
 
@@ -132,16 +140,19 @@
 
 %%
 
-yyerror(){};
+int yyerror(const char *ptr) {
+	printf("%s\n\n", ptr);
+	exit(EXIT_FAILURE);
+};
 
 int main(int argc, char **argv) {
 	llist = initialize_list();
 	olist = initialize_list();
 	yyparse();
 	set_address(llist, olist, lcount, ocount, mem);
-	show_list(llist, lcount);
-	show_list(olist, ocount);
+	initiate(iline);
 	print_mem(*mem);
+	fetch(mem, iline, &pc);
 	return 0;
 }
 

@@ -1,9 +1,11 @@
 #ifndef REGISTER_H_
 #define REGISTER_H_
 
-typedef struct {
+typedef struct reg {
 	int flag;
 	char reg[32];
-} register;
+} reg;
+
+char *get_register(char *str);
 
 #endif

@@ -2,6 +2,8 @@
 #define MEMORY_H_
 #define MEMSIZE 512
 
+extern char EMPTY_POS[];
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,7 +21,5 @@ void print_mem(memory mem);
 void copy(memory *mem, char *str, int mbeggin, int mend, int pos, int sbeggin);
 
 void set_address(list *llist, list *olist, int lcount, int ocount, memory *mem);
-
-char *decimal_to_binary(int n);
 
 #endif

@@ -1,16 +1,18 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "line.h"
 
 void initiate(line *li) {
+	li = (line*) malloc(sizeof(line));
+	li -> beggin = (node*) malloc(sizeof(node));
+	li -> end = (node*) malloc(sizeof(node));
 	li -> beggin = NULL;
 	li -> end = NULL;
-	printf("\t\tFila inicializada.\n");
 }
 
-void putIn(int key, char *data, line *li) {
+void putIn(char *data, line *li) {
 	node *new = (node*) malloc(sizeof(node));
-	new -> key = key;
 	new -> data = data;
 	new -> next = NULL;
 	if(!li -> beggin) {
@@ -21,11 +23,11 @@ void putIn(int key, char *data, line *li) {
 	li -> end = new;
 }
 
-void showLine(line li) {
-	node *p = li.beggin;
+void showLine(line *li) {
+	node *p = li -> beggin;
 	printf("Beggin -> [");
 	while(p) {
-		printf("%d, %s", p -> key, p -> data);
+		printf("%s", p -> data);
 		p = p -> next;
 		if(p) printf("], [");
 	}
@@ -36,7 +38,7 @@ void showFirst(line li) {
 	if(!li.beggin) {
 		printf("Empty line.\n");
 	} else {
-		printf("First -> [%d, %s].\n", li.beggin -> key, li.beggin -> data);
+		printf("First -> [%s].\n", li.beggin -> data);
 	}
 }
 
@@ -47,7 +49,7 @@ void showLast(line li) {
 		while(p -> next) {
 			p = p -> next;
 		}
-		printf("Last -> [%d, %s].\n", p -> key, p -> data);
+		printf("Last -> [%s].\n", p -> data);
 	}
 }
 
@@ -66,25 +68,29 @@ int showSize(line li) {
 	}
 }
 
-void putOut(line *line) {
+void putOut(line *li) {
 	node *elem;
-	elem = line -> beggin;
+	elem = li -> beggin;
 	if(!elem) {
 		printf("Empty line.\n");
 	} else {
-		line -> beggin = elem -> next;
+		li -> beggin = elem -> next;
 		free(elem);
 	}
 }
 
-void clearLine(line *line) {
+void clearLine(line *li) {
 	node *atual, *next;
-	atual = line -> beggin;
+	atual = li -> beggin;
 	while(atual) {
 		next = atual -> next;
 		free(atual);
 		atual = next;
 	}
-	line -> beggin = NULL;
-	line -> end = NULL;
+	li -> beggin = NULL;
+	li -> end = NULL;
+}
+
+int isEmpty(line *li) {
+	return li -> beggin == NULL ? 0 : 1;
 }

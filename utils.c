@@ -19,3 +19,19 @@ void show_list(list *ilist, int size) {
 	}
 	printf("\n");
 }
+
+char *decimal_to_binary(int n) {
+	int aux, count = 0;
+	char *bin;
+	bin = (char*) malloc(32+1);
+	for(int c = 31; c >= 0; c--) {
+		aux = n >> c;
+		if(aux & 1)
+			*(bin + count) = 1 + '0';
+		else
+			*(bin + count) = 0 + '0';
+		count++;
+	}
+	*(bin+count) = '\0';
+	return bin;
+}

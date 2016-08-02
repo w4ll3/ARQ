@@ -1,10 +1,9 @@
 #ifndef LINE_H_
 #define LINE_H_
 
-#include <stdlib.h>
+extern int EXIT_SIGNAL;
 
 typedef struct structure {
-	int key;
 	char *data;
 	struct structure *next;
 } node;
@@ -15,9 +14,9 @@ typedef struct {
 
 void initiate(line *li);
 
-void putIn(int key, char *data, line *li);
+void putIn(char *data, line *li);
 
-void showLine(line li);
+void showLine(line *li);
 
 void showFirst(line li);
 
@@ -28,5 +27,7 @@ int showSize(line li);
 void putOut(line *line);
 
 void clearLine(line *line);
+
+int isEmpty(line *li);
 
 #endif

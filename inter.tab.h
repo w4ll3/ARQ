@@ -84,7 +84,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 13 "inter.y" /* yacc.c:1909  */
+#line 17 "inter.y" /* yacc.c:1909  */
 
 	char *opp, *reg, *label;
 	int value;

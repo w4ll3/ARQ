@@ -66,15 +66,19 @@
 
 	#include "memory.h"
 	#include "utils.h"
+	#include "register.h"
+	#include "processor.h"
+	#include "line.h"
 
 	memory *mem;
 	list *llist, *olist;
+	line *iline;
 
-	int pc = 0;
+	int ic = 0;
 	int lcount = 0;
 	int ocount = 0;
 
-#line 78 "inter.tab.c" /* yacc.c:339  */
+#line 82 "inter.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -148,12 +152,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 13 "inter.y" /* yacc.c:355  */
+#line 17 "inter.y" /* yacc.c:355  */
 
 	char *opp, *reg, *label;
 	int value;
 
-#line 157 "inter.tab.c" /* yacc.c:355  */
+#line 161 "inter.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -170,7 +174,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 174 "inter.tab.c" /* yacc.c:358  */
+#line 178 "inter.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -470,9 +474,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    40,    57,    57,    57,    57,    57,    57,
-      61,    66,    72,    75,    81,    86,    91,    96,   101,   107,
-     113,   122,   128,   129,   130
+       0,    34,    34,    44,    62,    62,    62,    62,    62,    62,
+      66,    71,    77,    80,    84,    91,    97,   104,   110,   117,
+     123,   131,   136,   137,   138
 };
 #endif
 
@@ -1309,138 +1313,136 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 34 "inter.y" /* yacc.c:1646  */
+#line 38 "inter.y" /* yacc.c:1646  */
     {
-			printf(".text\t\t[OK]\n");
+			printf("Text\t\t[OK]\n");
 		}
-#line 1317 "inter.tab.c" /* yacc.c:1646  */
+#line 1321 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 50 "inter.y" /* yacc.c:1646  */
+#line 54 "inter.y" /* yacc.c:1646  */
     {
 			mem = initialize_mem((yyvsp[-1].value));
+			search = (yyvsp[-29].value);
 			printf("Architecture\t[OK]\n");
 		}
-#line 1326 "inter.tab.c" /* yacc.c:1646  */
+#line 1331 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 63 "inter.y" /* yacc.c:1646  */
+#line 68 "inter.y" /* yacc.c:1646  */
     {
 
 		}
-#line 1334 "inter.tab.c" /* yacc.c:1646  */
+#line 1339 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 66 "inter.y" /* yacc.c:1646  */
+#line 71 "inter.y" /* yacc.c:1646  */
     {
 			printf("Cicles\t\t[OK]\n");
 		}
-#line 1342 "inter.tab.c" /* yacc.c:1646  */
+#line 1347 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 72 "inter.y" /* yacc.c:1646  */
+#line 77 "inter.y" /* yacc.c:1646  */
     {
 
 		}
-#line 1350 "inter.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 75 "inter.y" /* yacc.c:1646  */
-    {
-			printf(".data\t\t[OK]\n");
-		}
-#line 1358 "inter.tab.c" /* yacc.c:1646  */
+#line 1355 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 81 "inter.y" /* yacc.c:1646  */
+#line 84 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s %s, %s, %s \n", pc, (yyvsp[-6].opp), (yyvsp[-5].reg), (yyvsp[-3].reg), (yyvsp[-1].reg));
-			copy(mem, (yyvsp[-6].opp), 0, 5, pc, 0);
-			pc++;
+			copy(mem, (yyvsp[-6].opp), 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-5].reg))) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-3].reg))) - 1), 11, 15, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-1].reg))) - 1), 16, 21, mem -> size - ic - 1, 27);
+			ic++;
 		}
-#line 1368 "inter.tab.c" /* yacc.c:1646  */
+#line 1367 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 86 "inter.y" /* yacc.c:1646  */
+#line 91 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s %s, %s \n", pc, (yyvsp[-4].opp), (yyvsp[-3].reg), (yyvsp[-1].reg));
-			copy(mem, (yyvsp[-4].opp), 0, 5, pc, 0);
-			pc++;
+			copy(mem, (yyvsp[-4].opp), 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-3].reg))) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-1].reg))) - 1), 11, 15, mem -> size - ic - 1, 27);
+			ic++;
 		}
 #line 1378 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 91 "inter.y" /* yacc.c:1646  */
+#line 97 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s %s, %s, %d\n", pc, (yyvsp[-7].opp), (yyvsp[-6].reg), (yyvsp[-4].reg), (yyvsp[-1].value));
-			copy(mem, (yyvsp[-7].opp), 0, 5, pc, 0);
-			pc++;
+			copy(mem, (yyvsp[-7].opp), 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-6].reg))) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-4].reg))) - 1), 11, 15, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary((yyvsp[-1].value)), 16, 31, mem -> size - ic - 1, 16);
+			ic++;
 		}
-#line 1388 "inter.tab.c" /* yacc.c:1646  */
+#line 1390 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 96 "inter.y" /* yacc.c:1646  */
+#line 104 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s %s, %d\n", pc, (yyvsp[-5].opp), (yyvsp[-4].reg), (yyvsp[-1].value));
-			copy(mem, (yyvsp[-5].opp), 0, 5, pc, 0);
-			pc++;
+			copy(mem, (yyvsp[-5].opp), 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-4].reg))) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary((yyvsp[-1].value)), 11, 31, mem -> size - ic - 1, 11);
+			ic++;
 		}
-#line 1398 "inter.tab.c" /* yacc.c:1646  */
+#line 1401 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 101 "inter.y" /* yacc.c:1646  */
+#line 110 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s %s, %s, %s \n", pc, (yyvsp[-6].opp), (yyvsp[-5].reg), (yyvsp[-3].reg), (yyvsp[-1].label));
-			copy(mem, (yyvsp[-6].opp), 0, 5, pc, 0);
-			insert_list(olist, (yyvsp[-1].label), pc, &ocount);
-			pc++;
+			copy(mem, (yyvsp[-6].opp), 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-5].reg))) - 1), 6, 10, mem -> size - ic - 1, 27);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-3].reg))) - 1), 11, 15, mem -> size - ic - 1, 27);
+			insert_list(olist, (yyvsp[-1].label), mem -> size - ic - 1, &ocount);
+			ic++;
 		}
-#line 1409 "inter.tab.c" /* yacc.c:1646  */
+#line 1413 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 107 "inter.y" /* yacc.c:1646  */
+#line 117 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s %s, %s \n", pc, (yyvsp[-4].opp), (yyvsp[-3].reg), (yyvsp[-1].label));
-			copy(mem, (yyvsp[-4].opp), 0, 5, pc, 0);
-			insert_list(olist, (yyvsp[-1].label), pc, &ocount);
-			pc++;
+			copy(mem, (yyvsp[-4].opp), 0, 5, mem -> size - ic - 1, 0);
+			copy(mem, decimal_to_binary(atoi(get_register((yyvsp[-3].reg))) - 1), 6, 10, mem -> size - ic - 1, 27);
+			insert_list(olist, (yyvsp[-1].label), mem -> size - ic - 1, &ocount);
+			ic++;
 		}
-#line 1420 "inter.tab.c" /* yacc.c:1646  */
+#line 1424 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 113 "inter.y" /* yacc.c:1646  */
+#line 123 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s %s \n", pc, (yyvsp[-2].opp), (yyvsp[-1].label));
-			copy(mem, (yyvsp[-2].opp), 0, 5, pc, 0);
-			insert_list(olist, (yyvsp[-1].label), pc, &ocount);
-			pc++;
+			copy(mem, (yyvsp[-2].opp), 0, 5, mem -> size - ic - 1, 0);
+			insert_list(olist, (yyvsp[-1].label), mem -> size - ic - 1, &ocount);
+			ic++;
 		}
-#line 1431 "inter.tab.c" /* yacc.c:1646  */
+#line 1434 "inter.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 122 "inter.y" /* yacc.c:1646  */
+#line 131 "inter.y" /* yacc.c:1646  */
     {
-			printf("[%.3d]  %s:\n", pc, (yyvsp[-2].label));
-			insert_list(llist, (yyvsp[-2].label), pc, &lcount);
+			insert_list(llist, (yyvsp[-2].label), mem -> size - ic - 1, &lcount);
 		}
-#line 1440 "inter.tab.c" /* yacc.c:1646  */
+#line 1442 "inter.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1444 "inter.tab.c" /* yacc.c:1646  */
+#line 1446 "inter.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1668,19 +1670,22 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 133 "inter.y" /* yacc.c:1906  */
+#line 141 "inter.y" /* yacc.c:1906  */
 
 
-yyerror(){};
+int yyerror(const char *ptr) {
+	printf("%s\n\n", ptr);
+	exit(EXIT_FAILURE);
+};
 
 int main(int argc, char **argv) {
 	llist = initialize_list();
 	olist = initialize_list();
 	yyparse();
 	set_address(llist, olist, lcount, ocount, mem);
-	show_list(llist, lcount);
-	show_list(olist, ocount);
+	initiate(iline);
 	print_mem(*mem);
+	fetch(mem, iline, &pc);
 	return 0;
 }
 

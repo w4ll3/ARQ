@@ -6,6 +6,8 @@
 
 %%
 
+"r"\n						{						/*GDB*/						}
+
 "ARQUITETURA"				{ 					return ARCH;					}
 "somador"					{					return A_SUM;					}
 "multiplicador"				{					return A_MUL;					}
@@ -65,7 +67,8 @@
 ","							{					return COMMA;					}
 ":"							{					return COLLON;					}
 [\r?\n]*					{					return EOL;						}
-[ \t]						{					/*spaces*/						}
+[ \t]*						{					/*spaces*/						}
+"//".*						{					/*comment*/						}
 .							{	printf("'%s' is not a valid entry.\n", yytext);	}
 
 %%

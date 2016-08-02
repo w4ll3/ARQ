@@ -1,8 +1,9 @@
+r
 ARQUITETURA
 somador				=	20
 multiplicador		=	25
 divisor				=	25444
-busca_de_instrucoes	=	1234
+busca_de_instrucoes	=	5
 buffer_de_carga		=	20123
 buffer_de_escrita	=	25123
 re_sum				=	4
@@ -57,35 +58,35 @@ TEXTO
 		.int 255
 	.text
 	label:
-		addi   R1,     R10,     $-1
-		add    r1,     r10,     r20
-		and    R1,     R2,      R3
-		andi   R2,     R10,     $10
-		b      label
-		beq    r1,     R2,      label
-		beqz   r1,     label
-		bgt    r1,     R2,      label
-		bge    r1,     R2,      label
-		bgtz   r1,     label
-		blt    r1,     R2,      label
-		ble    r1,     R2,      label
+		bnez   r1,     label					//		18		010010
+		bne    r1,     R2,      label			//		39		100111
+		b      label							//		48		110000
+		beq    r1,     R2,      label			//		38		100110
+		beqz   r1,     label					//		17		010001
+		bgt    r1,     R2,      label			//		41		101001
+		bge    r1,     R2,      label			//		40		101000
+		bgtz   r1,     label					//		19		010011
+		blt    r1,     R2,      label			//		43		101011
+		ble    r1,     R2,      label			//		20		010100
+		blez   r1,     label					//		42		101010
+		addi   R1,     R10,     $-1				//		5		100000
+		add    r1,     r10,     r20				//		32		000101
+		and    R1,     R2,      R3				//		9		001001
+		andi   R2,     R10,     $10				//		36		100100
 	onemorelabe:
-		blez   r1,     label
-		bne    r1,     R2,      label
-		bnez   r1,     label
-		div    R12,    r1,      R3
-		divi   R2,     r1,      $10
-		ld     r10,    r2
-		li     r10,    $10
-		move   r2,     r10
-		mult   R12,    r1,      R2
-		multi  R12,    r1,      $10
-		neg    R12,    r1
-		not    R12,    r1
-		or     R12,    r1,      R2
-		ori    R12,    r1,      $10
-		sll    R12,    r1,      R2
-		slr    R12,    r1,      r2
-		st     r10,    r2
-		sub    R12,    r1,      R2
-		subi   R2,     r1,      $10
+		div    R12,    r1,      R3				//		8		001000
+		divi   R2,     r1,      $10				//		34		100011
+		li     r10,    $10						//		16		010000
+		ld     r10,    r2						//		0		000000
+		move   r2,     r10						//		2		000010
+		mult   R12,    r1,      R2				//		7		000111
+		multi  R12,    r1,      $10				//		34		100010
+		neg    R12,    r1						//		3		000011
+		not    R12,    r1						//		4		000100
+		or     R12,    r1,      R2				//		10		001010
+		ori    R12,    r1,      $10				//		37		100101
+		sll    R12,    r1,      R2				//		11		001011
+		slr    R12,    r1,      r2				//		12		001100
+		st     r10,    r2						//		1		000001
+		sub    R12,    r1,      R2				//		6		000110
+		subi   R2,     r1,      $10				//		33		100001
