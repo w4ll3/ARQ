@@ -1,11 +1,10 @@
-r
 ARQUITETURA
 somador				=	20
 multiplicador		=	25
-divisor				=	25444
+divisor				=	66
 busca_de_instrucoes	=	5
-buffer_de_carga		=	20123
-buffer_de_escrita	=	25123
+buffer_de_carga		=	33
+buffer_de_escrita	=	51
 re_sum				=	4
 re_sub				=	4
 re_div				=	4
@@ -49,6 +48,7 @@ CICLOS
 
 TEXTO
 	.data
+		.int -9
 		.int 10
 		.int 32940
 		.int 10

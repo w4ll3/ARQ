@@ -1,9 +1,5 @@
 #include "memory.h"
 
-char EMPTY_POS[] = {
-	"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
-};
-
 memory *initialize_mem(int size) {
 	memory *mem = (memory*) malloc(sizeof(memory));
 	mem -> data = (char**) malloc(size * sizeof(memory));

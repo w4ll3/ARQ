@@ -3,19 +3,20 @@
 #include <string.h>
 #include "line.h"
 
-void initiate(line *li) {
-	li = (line*) malloc(sizeof(line));
+line *initiate() {
+	line *li = (line*) malloc(sizeof(line));
 	li -> beggin = (node*) malloc(sizeof(node));
 	li -> end = (node*) malloc(sizeof(node));
 	li -> beggin = NULL;
 	li -> end = NULL;
+	return li;
 }
 
 void putIn(char *data, line *li) {
 	node *new = (node*) malloc(sizeof(node));
 	new -> data = data;
 	new -> next = NULL;
-	if(!li -> beggin) {
+	if(li -> beggin == NULL) {
 		li -> beggin = new;
 	} else {
 		li -> end -> next = new;
@@ -68,14 +69,14 @@ int showSize(line li) {
 	}
 }
 
-void putOut(line *li) {
+char *putOut(line *li) {
 	node *elem;
 	elem = li -> beggin;
 	if(!elem) {
 		printf("Empty line.\n");
 	} else {
 		li -> beggin = elem -> next;
-		free(elem);
+		return elem -> data;
 	}
 }
 

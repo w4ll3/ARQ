@@ -1,15 +1,14 @@
 #ifndef MEMORY_H_
 #define MEMORY_H_
 #define MEMSIZE 512
-
-extern char EMPTY_POS[];
+#define EMPTY_POS "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "utils.h"
 
-typedef struct memory {
+typedef struct {
 	char **data;
 	int size;
 } memory;

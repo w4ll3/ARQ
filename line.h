@@ -12,7 +12,7 @@ typedef struct {
 	node *beggin, *end;
 } line;
 
-void initiate(line *li);
+line *initiate();
 
 void putIn(char *data, line *li);
 
@@ -24,7 +24,7 @@ void showLast(line li);
 
 int showSize(line li);
 
-void putOut(line *line);
+char *putOut(line *line);
 
 void clearLine(line *line);
 

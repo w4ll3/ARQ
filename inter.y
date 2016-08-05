@@ -4,12 +4,18 @@
 	#include "register.h"
 	#include "processor.h"
 	#include "line.h"
+	#include "rs.h"
+	#include "functional_unit.h"
 
 	memory *mem;
 	list *llist, *olist;
 	line *iline;
+	functional_unit *fu;
+	reserve_station *rs;
+
 
 	int ic = 0;
+	int vcount = 0;
 	int lcount = 0;
 	int ocount = 0;
 %}
@@ -53,6 +59,8 @@
 		RE_MUL EQUAL VALUE EOL
 		MEM_SIZE EQUAL VALUE EOL {
 			mem = initialize_mem($43);
+			fu = initiate_fu($3, $7, $11, $19, $23);
+			rs = initiate_rs($27, $31, $35, $39);
 			search = $15;
 			printf("Architecture\t[OK]\n");
 		}
@@ -75,7 +83,8 @@
 
 	dados:
 		TYPE VALUE EOL dados {
-
+			copy(mem, decimal_to_binary($2), 0, 31, vcount, 0);
+			vcount++;
 		}
 		|
 	;
@@ -150,9 +159,11 @@ int main(int argc, char **argv) {
 	olist = initialize_list();
 	yyparse();
 	set_address(llist, olist, lcount, ocount, mem);
-	initiate(iline);
+	iline = initiate();
 	print_mem(*mem);
 	fetch(mem, iline, &pc);
+	fu_stats(fu);
+	issue(&pc, iline);
 	return 0;
 }
 

@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include "utils.h"
+
 
 list *initialize_list() {
 	list *ilist = (list*) malloc(sizeof(list) * 4096);
@@ -34,4 +38,13 @@ char *decimal_to_binary(int n) {
 	}
 	*(bin+count) = '\0';
 	return bin;
+}
+
+int binary_to_decimal(char *str, int beggin, int end) {
+	int result = 0;
+	for(int i = beggin; i < end; i++) {
+		if(str[end - i - 1] == '1')
+			result += pow(2, i);
+	}
+	return result;
 }
