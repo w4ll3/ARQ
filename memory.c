@@ -18,12 +18,12 @@ void print_mem(memory mem) {
 	printf(".");
 	print_minus(80);
 	printf(".\n");
-	for (size_t i = 0; i < mem.size; i++) {
+	for (int i = 0; i < mem.size; i++) {
 		if (strcmp(mem.data[i], EMPTY_POS) == 0) {
 			counter++;
 		} else {
 			printf("|[%.4d]\t\t", i);
-			for (size_t j = 0; j < 32; j++) {
+			for (int j = 0; j < 32; j++) {
 				if(mem.data[i][j] == '\0') {
 					printf("%2c", ' ');
 				} else {

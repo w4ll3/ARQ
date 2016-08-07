@@ -25,9 +25,9 @@ void print_reg(reg_bank *reg) {
 	printf(".");
 	print_minus(80);
 	printf(".\n");
-	for (size_t i = 0; i < REG_TOTAL; i++) {
+	for (int i = 0; i < REG_TOTAL; i++) {
 		printf("|[%.2d]\t\t", i);
-		for (size_t j = 0; j < 32; j++) {
+		for (int j = 0; j < 32; j++) {
 			if(reg[i].data[j] == '\0') {
 				printf("%2c", ' ');
 			} else {

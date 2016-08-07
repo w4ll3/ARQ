@@ -232,7 +232,7 @@ void set_rs(reserve_station *rs, int id, int type, char *inst, int op, reg_bank 
 			rs[id].busy = 1;
 			rs[id].a = -1;
 			int reg_id = binary_to_decimal(inst, 11, 15);
-			printf("reg_qi %d\n", reg[reg_id].qi);
+			printf("reg_id %d\n", reg_id);
 			if(reg[reg_id].qi == AVAILABLE)
 				rs[id].vj = binary_to_decimal(reg[reg_id].data, 0, 31);
 			else

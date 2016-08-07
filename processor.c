@@ -91,8 +91,8 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 			case ORI: {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
-					set_rs(rs, rs_id, REG_2I, inst, opp, reg);
 					printf("%d | %d\n", rs_id, opp);
+					set_rs(rs, rs_id, REG_2I, inst, opp, reg);
 					inst = putOut(li);
 				} else
 					stall = 0;
@@ -133,8 +133,9 @@ void execute(int *pc, reserve_station *rs) {
 	for(int i = 0; i < rs_total; i++) {
 		if(rs[i].busy != EMPTY_RS) {
 			int busy = rs[i].id;
-			if(rs[busy].qj != EMPTY_RS || rs[busy].qk != EMPTY_RS)
-				cdb(pc, rs);
+			if(rs[busy].qj == EMPTY_RS || rs[busy].qk == EMPTY_RS)
+				printf("cebola\n");
+				//cdb(pc, rs);
 		} else {
 			continue;
 		}

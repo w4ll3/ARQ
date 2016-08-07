@@ -1,7 +1,7 @@
 all: clean
 	bison -d inter.y
 	flex inter.l
-	gcc -o $@.exe *.c -lfl -Wno-implicit-function-declaration
+	gcc -o $@.exe *.c -lfl
 	./$@.exe < entrada
 
 clean:
