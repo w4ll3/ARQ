@@ -40,12 +40,13 @@
 
 extern int pc;
 extern int search;
-extern int cicles[];
 
 void fetch(memory *mem, line *li, int *pc, int *ic);
 
 void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg);
 
-void execute(int *pc);
+void execute(int *pc, reserve_station *rs);
+
+void cdb(int *pc, reserve_station *rs);
 
 #endif

@@ -4,6 +4,7 @@
 #include "register.h"
 
 #define EMPTY_RS -1
+#define READY -2
 #define REG_1I 0
 #define REG_1L 1
 #define REG_2 2
@@ -13,7 +14,7 @@
 #define L 6
 
 typedef struct {
-	int op, qj, qk, vj, vk, a, busy, id, count;
+	int op, qj, qk, vj, vk, a, busy, id;
 } reserve_station;
 
 extern int rs_sum, rs_div, rs_sub, rs_mult, rs_total;
@@ -28,7 +29,17 @@ int empty_div(reserve_station *rs);
 
 int empty_mult(reserve_station *rs);
 
+int busy_sum(reserve_station *rs);
+
+int busy_sub(reserve_station *rs);
+
+int busy_div(reserve_station *rs);
+
+int busy_mult(reserve_station *rs);
+
 int empty_rs(reserve_station *rs, int opp);
+
+int busy_rs(reserve_station *rs);
 
 void show_rs(reserve_station *rs);
 

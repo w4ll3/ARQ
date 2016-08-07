@@ -12,7 +12,9 @@
 	memory *mem;
 	list *llist, *olist;
 	line *iline;
-	functional_unit *fu;
+	sum_unit *sum_fu;
+	div_unit *div_fu;
+	mult_unit *mult_fu;
 	reserve_station *rs;
 	reg_bank *reg;
 
@@ -62,7 +64,9 @@
 		RE_MUL EQUAL VALUE EOL
 		MEM_SIZE EQUAL VALUE EOL {
 			mem = initiate_mem($43);
-			fu = initiate_fu($3, $7, $11, $19, $23);
+			sum_fu = initiate_sfu($3);
+			div_fu = initiate_dfu($7);
+			mult_fu = initiate_mfu($11);
 			rs = initiate_rs($27, $31, $35, $39);
 			reg = initiate_breg();
 			search = $15;
@@ -174,9 +178,12 @@ int main(int argc, char **argv) {
 	set_address(llist, olist, lcount, ocount, mem);
 	iline = initiate();
 	print_mem(*mem);
-	fetch(mem, iline, &pc, &ic);
-	fu_stats(fu);
-	issue(&pc, iline, rs, reg);
+	for(int i = 0; i < 2; i++)
+		fetch(mem, iline, &pc, &ic);
+	for(int i = 0; i < 9; i++)
+		issue(&pc, iline, rs, reg);
+	show_rs(rs);
+	execute(&pc, rs);
 	show_rs(rs);
 	return 0;
 }

@@ -1,12 +1,24 @@
 #ifndef FUNCTIONAL_UNIT_H_
 #define FUNCTIONAL_UNIT_H_
 
+extern int cicles[];
+
 typedef struct {
-	int sum, div, mul, load, store, sbusy, dbusy, mbusy, lbusy, stbusy;
-} functional_unit;
+	int cicles, id, rs;
+} sum_unit;
 
-functional_unit *initiate_fu(int sum, int div, int mul, int load, int store);
+typedef struct {
+	int cicles, id, rs;
+} div_unit;
 
-void fu_stats(functional_unit *fu);
+typedef struct {
+	int cicles, id, rs;
+} mult_unit;
+
+sum_unit *initiate_sfu(int sum);
+
+div_unit *initiate_dfu(int div);
+
+mult_unit *initiate_mfu(int mult);
 
 #endif
