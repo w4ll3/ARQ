@@ -3,6 +3,23 @@
 #include <math.h>
 #include "utils.h"
 
+char *get_register(char *str) {
+	char *aux = (char*) malloc(3);
+	int i = 1;
+	while(str[i] != '\0') {
+		aux[i - 1] = str[i];
+		i++;
+	}
+	aux[i] = '\0';
+	return aux;
+}
+
+void print_minus(int quantity) {
+	while (quantity != 0) {
+		printf("%c", '-');
+		quantity--;
+	}
+}
 
 list *initialize_list() {
 	list *ilist = (list*) malloc(sizeof(list) * 4096);
@@ -42,9 +59,9 @@ char *decimal_to_binary(int n) {
 
 int binary_to_decimal(char *str, int beggin, int end) {
 	int result = 0;
-	for(int i = beggin; i < end; i++) {
-		if(str[end - i - 1] == '1')
-			result += pow(2, i);
+	for(int i = end; i >= beggin; i--) {
+		if(str[i] == '1')
+			result += pow(2, end - i);
 	}
 	return result;
 }

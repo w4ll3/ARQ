@@ -6,12 +6,15 @@
 	#include "line.h"
 	#include "rs.h"
 	#include "functional_unit.h"
+	#include <stdio.h>
+	#include <stdlib.h>
 
 	memory *mem;
 	list *llist, *olist;
 	line *iline;
 	functional_unit *fu;
 	reserve_station *rs;
+	reg_bank *reg;
 
 
 	int ic = 0;
@@ -58,23 +61,33 @@
 		RE_DIV EQUAL VALUE EOL
 		RE_MUL EQUAL VALUE EOL
 		MEM_SIZE EQUAL VALUE EOL {
-			mem = initialize_mem($43);
+			mem = initiate_mem($43);
 			fu = initiate_fu($3, $7, $11, $19, $23);
 			rs = initiate_rs($27, $31, $35, $39);
+			reg = initiate_breg();
 			search = $15;
 			printf("Architecture\t[OK]\n");
 		}
 	;
 
-	inst:
-		REG3 | REG2 | REG2_I | REG2_L | REG_I | LAB
-	;
-
 	set_cicles:
-		inst
-		EQUAL VALUE EOL
-		set_cicles {
-
+		REG3 EQUAL VALUE EOL set_cicles {
+			cicles[binary_to_decimal($1, 0, 5)] = $3;
+		}
+		| REG2 EQUAL VALUE EOL set_cicles {
+			cicles[binary_to_decimal($1, 0, 5)] = $3;
+		}
+		| REG2_I EQUAL VALUE EOL set_cicles {
+			cicles[binary_to_decimal($1, 0, 5)] = $3;
+		}
+		| REG2_L EQUAL VALUE EOL set_cicles {
+			cicles[binary_to_decimal($1, 0, 5)] = $3;
+		}
+		| REG_I EQUAL VALUE EOL set_cicles {
+			cicles[binary_to_decimal($1, 0, 5)] = $3;
+		}
+		| LAB EQUAL VALUE EOL set_cicles {
+			cicles[binary_to_decimal($1, 0, 5)] = $3;
 		}
 		| {
 			printf("Cicles\t\t[OK]\n");
@@ -161,9 +174,10 @@ int main(int argc, char **argv) {
 	set_address(llist, olist, lcount, ocount, mem);
 	iline = initiate();
 	print_mem(*mem);
-	fetch(mem, iline, &pc);
+	fetch(mem, iline, &pc, &ic);
 	fu_stats(fu);
-	issue(&pc, iline);
+	issue(&pc, iline, rs, reg);
+	show_rs(rs);
 	return 0;
 }
 

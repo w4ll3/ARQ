@@ -1,6 +1,9 @@
 #include "memory.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-memory *initialize_mem(int size) {
+memory *initiate_mem(int size) {
 	memory *mem = (memory*) malloc(sizeof(memory));
 	mem -> data = (char**) malloc(size * sizeof(memory));
 	for (int i = 0; i < size; i++)
@@ -8,13 +11,6 @@ memory *initialize_mem(int size) {
 
 	mem -> size = size;
 	return mem;
-}
-
-void print_minus(int quantity) {
-	while (quantity != 0) {
-		printf("%c", '-');
-		quantity--;
-	}
 }
 
 void print_mem(memory mem) {

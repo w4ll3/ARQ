@@ -1,119 +1,122 @@
 #include "processor.h"
 #include "register.h"
 #include "utils.h"
+#include <stdio.h>
 
 int EXIT_SIGNAL = 1;
 
 int pc = 0;
 int search = 0;
 int stall = 1;
+int branch = 1;
+int cicles[48];
 
-void fetch(memory *mem, line *li, int *pc) {
+void fetch(memory *mem, line *li, int *pc, int *ic) {
 	int count = 0;
-	while (count != search) {
+	while (count != search && ic && branch) {
 		putIn(mem -> data[mem -> size - *pc - 1], li);
-		printf("| %d | %s\n", *pc, mem -> data [mem -> size - *pc - 1]);
+		*ic -= 1;
 		*pc += 1;
 		count++;
 	}
 }
 
-void issue(int *pc, line *li) {
+void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 	if(!isEmpty(li) && stall) {
 		printf("Stalled\n");
 		stall = 0;
 	} else {
-		char *inst = putOut(li);
-		int opp = binary_to_decimal(inst, 0, 6);
+		char *inst = li -> beggin -> data;
+		int opp = binary_to_decimal(inst, 0, 5);
 		switch(opp) {
-			case LD: {
-				break;
-			}
-			case ST: {
-				break;
-			}
-			case MOVE: {
-				break;
-			}
-			case NEG: {
-				break;
-			}
+			case LD:
+			case ST:
+			case MOVE:
+			case NEG:
 			case NOT: {
+				int rs_id = empty_rs(rs, opp);
+				if(rs_id != EMPTY_RS) {
+					set_rs(rs, rs_id, REG_2, inst, opp, reg);
+					inst = putOut(li);
+				} else
+					stall = 0;
 				break;
 			}
-			case ADD: {
-				break;
-			}
-			case SUB: {
-				break;
-			}
-			case MULT: {
-				break;
-			}
-			case DIV: {
-				break;
-			}
-			case AND: {
-				break;
-			}
-			case OR: {
-				break;
-			}
-			case SLL: {
-				break;
-			}
+			case ADD:
+			case SUB:
+			case MULT:
+			case DIV:
+			case AND:
+			case OR:
+			case SLL:
 			case SLR: {
+				int rs_id = empty_rs(rs, opp);
+				if(rs_id != EMPTY_RS) {
+					set_rs(rs, rs_id, REG_3, inst, opp, reg);
+					inst = putOut(li);
+				} else
+					stall = 0;
 				break;
 			}
 			case LI: {
+				int rs_id = empty_rs(rs, opp);
+				if(rs_id != EMPTY_RS) {
+					set_rs(rs, rs_id, REG_1I, inst, opp, reg);
+					inst = putOut(li);
+				} else
+					stall = 0;
 				break;
 			}
-			case BEQZ: {
-				break;
-			}
-			case BNEZ: {
-				break;
-			}
-			case BGTZ: {
-				break;
-			}
+			case BEQZ:
+			case BNEZ:
+			case BGTZ:
 			case BLEZ: {
+				int rs_id = empty_rs(rs, opp);
+				if(rs_id != EMPTY_RS) {
+					set_rs(rs, rs_id, REG_1L, inst, opp, reg);
+					inst = putOut(li);
+					branch = 0;
+				} else
+					stall = 0;
 				break;
 			}
-			case ADDI: {
-				break;
-			}
-			case SUBI: {
-				break;
-			}
-			case MULTI: {
-				break;
-			}
-			case DIVI: {
-				break;
-			}
-			case ANDI: {
-				break;
-			}
+			case ADDI:
+			case SUBI:
+			case MULTI:
+			case DIVI:
+			case ANDI:
 			case ORI: {
+				int rs_id = empty_rs(rs, opp);
+				if(rs_id != EMPTY_RS) {
+					set_rs(rs, rs_id, REG_2I, inst, opp, reg);
+					inst = putOut(li);
+				} else
+					stall = 0;
 				break;
 			}
-			case BEQ: {
-				break;
-			}
-			case BNE: {
-				break;
-			}
-			case BGT: {
-				break;
-			}
-			case BGE: {
-				break;
-			}
-			case BLT: {
-				break;
-			}
+			case BEQ:
+			case BNE:
+			case BGT:
+			case BGE:
+			case BLT:
 			case BLE: {
+				int rs_id = empty_rs(rs, opp);
+				if(rs_id != EMPTY_RS) {
+					set_rs(rs, rs_id, REG_2L, inst, opp, reg);
+					inst = putOut(li);
+					branch = 0;
+				} else
+					stall = 0;
+				break;
+			}
+			case B: {
+				int rs_id = empty_rs(rs, opp);
+				if(rs_id != EMPTY_RS) {
+					set_rs(rs, rs_id, REG_2L, inst, opp, reg);
+					inst = putOut(li);
+					branch = 0;
+				} else
+					stall = 0;
 				break;
 			}
 		}
@@ -121,5 +124,5 @@ void issue(int *pc, line *li) {
 }
 
 void execute(int *pc) {
-
+	
 }

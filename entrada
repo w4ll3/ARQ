@@ -12,9 +12,9 @@ re_mul				=	4
 mem_size			=	1024
 CICLOS
 
-	add		=	5
+	add		=	8
 	addi	=	5
-	and		=	5
+	and		=	6
 	andi	=	5
 	b		=	5
 	beq		=	5
@@ -58,6 +58,11 @@ TEXTO
 		.int 255
 	.text
 	label:
+		add    r1,     r10,     r20				//		5		000101
+		add    r7,     r1,      r12				//		5		000101
+		add    r1,     r7,      r1				//		5		000101
+		add    r1,     r8,      r12				//		5		000101
+		add    r1,     r8,      r12				//		5		000101
 		bnez   r1,     label					//		18		010010
 		bne    r1,     R2,      label			//		39		100111
 		b      label							//		48		110000
@@ -69,8 +74,7 @@ TEXTO
 		blt    r1,     R2,      label			//		43		101011
 		ble    r1,     R2,      label			//		20		010100
 		blez   r1,     label					//		42		101010
-		addi   R1,     R10,     $-1				//		5		100000
-		add    r1,     r10,     r20				//		32		000101
+		addi   R1,     R10,     $-1				//		35		100000
 		and    R1,     R2,      R3				//		9		001001
 		andi   R2,     R10,     $10				//		36		100100
 	onemorelabe:

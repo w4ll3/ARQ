@@ -1,10 +1,16 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#define EMPTY_POS "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+
 typedef struct list {
 	char *label;
 	int address;
 } list;
+
+char *get_register(char *str);
+
+void print_minus(int quantity);
 
 list *initialize_list();
 

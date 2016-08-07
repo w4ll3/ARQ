@@ -3,6 +3,8 @@
 
 #include "memory.h"
 #include "line.h"
+#include "rs.h"
+#include "register.h"
 
 #define	LD		0
 #define	ST		1
@@ -34,13 +36,15 @@
 #define	BGE		41
 #define	BLT		42
 #define	BLE		43
+#define	B		48
 
 extern int pc;
 extern int search;
+extern int cicles[];
 
-void fetch(memory *mem, line *li, int *pc);
+void fetch(memory *mem, line *li, int *pc, int *ic);
 
-void issue(int *pc, line *li);
+void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg);
 
 void execute(int *pc);
 

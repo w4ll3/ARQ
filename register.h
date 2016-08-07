@@ -1,11 +1,19 @@
 #ifndef REGISTER_H_
 #define REGISTER_H_
 
-typedef struct {
-	int flag, qi;
-	char reg[32];
-} reg;
+#define AVAILABLE -1
+#define REG_TOTAL 32
+#define BUSY -2
 
-char *get_register(char *str);
+typedef struct {
+	int qi;
+	char *data;
+} reg_bank;
+
+reg_bank *initiate_breg();
+
+int available_reg(reg_bank *reg);
+
+void print_reg(reg_bank *reg);
 
 #endif
