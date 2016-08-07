@@ -233,16 +233,19 @@ void set_rs(reserve_station *rs, int id, int type, char *inst, int op, reg_bank 
 			rs[id].a = -1;
 			int reg_id = binary_to_decimal(inst, 11, 15);
 			printf("reg_id %d\n", reg_id);
-			if(reg[reg_id].qi == AVAILABLE)
+			if(reg[reg_id].qi == AVAILABLE) {
 				rs[id].vj = binary_to_decimal(reg[reg_id].data, 0, 31);
-			else
+			} else {
 				rs[id].qj = reg[reg_id].qi;
+			}
 
 			reg_id = binary_to_decimal(inst, 16, 20);
-			if(reg[reg_id].qi == AVAILABLE)
+			printf("reg_id %d\n", reg_id);
+			if(reg[reg_id].qi == AVAILABLE) {
 				rs[id].vk = binary_to_decimal(reg[reg_id].data, 0, 31);
-			else
+			} else {
 				rs[id].qk = reg[reg_id].qi;
+			}
 
 			reg_id = binary_to_decimal(inst, 6, 10);
 			reg[reg_id].qi = id;

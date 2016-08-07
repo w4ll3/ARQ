@@ -16,7 +16,7 @@
 	div_unit *div_fu;
 	mult_unit *mult_fu;
 	reserve_station *rs;
-	reg_bank *reg;
+	reg_bank *regi;
 
 
 	int ic = 0;
@@ -68,7 +68,7 @@
 			div_fu = initiate_dfu($7);
 			mult_fu = initiate_mfu($11);
 			rs = initiate_rs($27, $31, $35, $39);
-			reg = initiate_breg();
+			regi = initiate_breg();
 			search = $15;
 			printf("Architecture\t[OK]\n");
 		}
@@ -181,7 +181,7 @@ int main(int argc, char **argv) {
 	for(int i = 0; i < 2; i++)
 		fetch(mem, iline, &pc, &ic);
 	for(int i = 0; i < 9; i++)
-		issue(&pc, iline, rs, reg);
+		issue(&pc, iline, rs, regi);
 	show_rs(rs);
 	execute(&pc, rs);
 	show_rs(rs);
