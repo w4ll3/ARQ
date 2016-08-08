@@ -5,6 +5,7 @@
 #include "line.h"
 #include "rs.h"
 #include "register.h"
+#include "functional_unit.h"
 
 #define	LD		0
 #define	ST		1
@@ -45,8 +46,7 @@ void fetch(memory *mem, line *li, int *pc, int *ic);
 
 void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg);
 
-void execute(int *pc, reserve_station *rs);
+void execute(int *pc, reserve_station *rs, fu_unit *fu);
 
-void cdb(int *pc, reserve_station *rs);
-
+void cdb(int *pc, reserve_station *rs, int id, fu_unit *fu, int flag);
 #endif

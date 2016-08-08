@@ -1,96 +1,141 @@
 ARQUITETURA
-somador				=	20
-multiplicador		=	25
-divisor				=	66
-busca_de_instrucoes	=	5
-buffer_de_carga		=	33
-buffer_de_escrita	=	51
-re_sum				=	4
-re_sub				=	4
-re_div				=	4
-re_mul				=	4
+somador				=	1
+multiplicador		=	1
+divisor				=	1
+busca_de_instrucoes	=	1
+buffer_de_carga		=	1
+buffer_de_escrita	=	1
+re_sum				=	1
+re_sub				=	1
+re_div				=	1
+re_mul				=	1
 mem_size			=	1024
+
 CICLOS
-
-	add		=	8
-	addi	=	5
-	and		=	6
-	andi	=	5
-	b		=	5
-	beq		=	5
-	beqz	=	5
-	bge		=	5
-	bgt		=	5
-	bgtz	=	5
-	ble		=	5
-	blez	=	5
-	blt		=	5
-	bne		=	5
-	bnez	=	5
-	div		=	5
-	divi	=	5
-	ld		=	5
-	li		=	5
-	move	=	5
-	mult	=	5
-	multi	=	5
-	neg		=	5
-	not		=	5
-	or		=	5
-	ori		=	5
-	sll		=	5
-	slr		=	5
-	st		=	5
-	sub		=	5
-	subi	=	5
-
-
+add    = 1
+addi   = 1
+sub    = 1
+subi   = 1
+mult   = 3
+multi  = 3
+div    = 3
+divi   = 3
+and    = 1
+andi   = 1
+neg    = 1
+not    = 1
+or     = 1
+ori    = 1
+sll    = 1
+slr    = 1
+b      = 2
+beq    = 2
+beqz   = 2
+bge    = 2
+bgt    = 2
+bgtz   = 2
+ble    = 2
+blez   = 2
+blt    = 2
+bne    = 2
+bnez   = 2
+ld     = 6
+li     = 2
+move   = 2
+st     = 6
 
 TEXTO
-	.data
-		.int -9
-		.int 10
-		.int 32940
-		.int 10
-		.int 32940
-		.int 2
-		.int 10
-		.int 255
-	.text
-	label:
-		add    r1,     r10,     r20				//		5		000101
-		add    r7,     r1,      r12				//		5		000101
-		mult   R12,    r1,      R2				//		7		000111
-		div    R12,    r1,      R3				//		8		001000
-		sub    R12,    r1,      R2				//		6		000110
-		add    r1,     r7,      r1				//		5		000101
-		add    r1,     r8,      r12				//		5		000101
-		add    r1,     r8,      r12				//		5		000101
-		bnez   r1,     label					//		18		010010
-		bne    r1,     R2,      label			//		39		100111
-		b      label							//		48		110000
-		beq    r1,     R2,      label			//		38		100110
-		beqz   r1,     label					//		17		010001
-		bgt    r1,     R2,      label			//		41		101001
-		bge    r1,     R2,      label			//		40		101000
-		bgtz   r1,     label					//		19		010011
-		blt    r1,     R2,      label			//		43		101011
-		ble    r1,     R2,      label			//		20		010100
-		blez   r1,     label					//		42		101010
-		addi   R1,     R10,     $-1				//		35		100000
-		and    R1,     R2,      R3				//		9		001001
-		andi   R2,     R10,     $10				//		36		100100
-	onemorelabe:
-		divi   R2,     r1,      $10				//		34		100011
-		li     r10,    $10						//		16		010000
-		ld     r10,    r2						//		0		000000
-		move   r2,     r10						//		2		000010
-		multi  R12,    r1,      $10				//		34		100010
-		neg    R12,    r1						//		3		000011
-		not    R12,    r1						//		4		000100
-		or     R12,    r1,      R2				//		10		001010
-		ori    R12,    r1,      $10				//		37		100101
-		sll    R12,    r1,      R2				//		11		001011
-		slr    R12,    r1,      r2				//		12		001100
-		st     r10,    r2						//		1		000001
-		subi   R2,     r1,      $10				//		33		100001
+
+.data
+.int 2
+.int 4
+.int 2
+
+
+.int 1
+.int 2
+.int 3
+.int 4
+
+.int 5
+.int 6
+.int 7
+.int 8
+
+
+.int 1
+.int 2
+
+.int 3
+.int 4
+
+.int 5
+.int 6
+
+.int 7
+.int 8
+
+.text
+
+setup:
+
+
+li r1, $0
+ld r10, r1
+
+addi r1, r1, $1
+ld r11, r1
+
+addi r1, r1, $1
+ld r12, r1
+
+mult r30, r10, r11
+addi r28, r30, $3
+
+mult r31, r11, r12
+add r29, r31, r28
+
+li r1, $0
+row:
+
+li r1, $0
+column:
+
+
+li r2, $0
+
+li r20, $0
+
+multe:
+
+
+mult r21, r1, r11
+add r21, r21, r2
+addi r22, r21, $3
+ld r22, r22
+
+
+mult r23, r2, r12
+add r23, r23, r1
+add r23, r23, r28
+ld r23, r23
+
+
+mult r24, r23, r22
+add r20, r20, r24
+
+checkmult:
+addi r2, r2, $1
+bne r2, r11, multe
+mult r25, r1, r12
+add r25, r25, r1
+add r25, r25, r29
+st r20, r25
+
+checkcolumn:
+addi r1, r1, $1
+bne r1, r12, column
+
+checkrow:
+addi r1, r1, $1
+bne r1, r10, row

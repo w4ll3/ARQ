@@ -4,31 +4,24 @@
 #include <string.h>
 
 line *initiate() {
-  line *li = (line *)malloc(sizeof(line));
-  li->beggin = (node *)malloc(sizeof(node));
-  li->end = (node *)malloc(sizeof(node));
-  li->beggin = NULL;
-  li->end = NULL;
-  return li;
+	line *li = (line*) malloc(sizeof(line));
+	li -> beggin = (node*) malloc(sizeof(node));
+	li -> end = li -> beggin;
+	return li;
 }
 
 void putIn(char *data, line *li) {
-  node *new = (node *)malloc(sizeof(node));
-  new->data = data;
-  new->next = NULL;
-  if (li->beggin == NULL) {
-    li->beggin = new;
-  } else {
-    li->end->next = new;
-  }
-  li->end = new;
+	node *new = (node*) malloc(sizeof(node));
+	new -> data = data;
+	new -> next = li -> beggin;
+	li -> beggin = new;
 }
 
 void showLine(line *li) {
-  node *p = li->beggin;
+  node *p = li -> beggin;
   printf("Beggin -> [");
   while (p) {
-    printf("%s", p->data);
+    printf("%s", p -> data);
     p = p->next;
     if (p)
       printf("], [");
@@ -71,27 +64,23 @@ int showSize(line li) {
   }
 }
 
-char *putOut(line *li) {
-  node *elem;
-  elem = li->beggin;
-  if (!elem) {
-    printf("Empty line.\n");
-  } else {
-    li->beggin = elem->next;
-    return elem->data;
-  }
+void putOut(line *li) {
+	node *elem;
+	elem = li -> beggin -> next;
+	free(li -> beggin);
+	li -> beggin = elem;
 }
 
 void clearLine(line *li) {
-  node *atual, *next;
-  atual = li->beggin;
-  while (atual) {
-    next = atual->next;
-    free(atual);
-    atual = next;
-  }
-  li->beggin = NULL;
-  li->end = NULL;
+	node *atual, *next;
+	atual = li->beggin;
+	while (atual) {
+		next = atual->next;
+		free(atual);
+		atual = next;
+	}
+	li->beggin = NULL;
+	li->end = NULL;
 }
 
-int isEmpty(line *li) { return li->beggin == NULL ? 0 : 1; }
+int isEmpty(line *li) { return li -> beggin -> data == NULL ? 1 : 0; }

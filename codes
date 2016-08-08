@@ -61,3 +61,35 @@ slr			12		001100
 st			1		000001
 sub			6		000110
 subi		33		100001
+
+add		Rd, Rs, Rt					Rd = Rs + Rt
+addi	Rt, Rs, Imed				Rt = Rs + Imed
+and		Rd, Rs, Rt					Rd = Rs AND Rt
+andi	Rt, Rs, Imed				Rt = Rs NOT Imed
+b		label						pc = label
+beqz	Rs, label					Rs == 0 -> pc <- label
+bgtz	Rs, label					Rs > 0 -> pc <- label
+blez	Rs, label					Rs <= 0 -> pc <- label
+bnez	Rs, label					Rs != 0 -> pc <- label
+beq		Rs, Rt, label				Rs == Rt -> pc <- label
+bgt		Rs, Rt, label				Rs > Rt -> pc <- label
+bge		Rs, Rt, label				Rs >= Rt -> pc <- label
+blt		Rs, Rt, label				Rs < Rt -> pc <- label
+ble		Rs, Rt, label				Rs <= Rt -> pc <- label
+bne		Rs, Rt, label				Rs != Rt -> pc <- label
+div		Rd, Rs, Rt					Rd = Rs / Rt
+divi	Rt, Rs, Imed				Rt = Rs / Imed
+ld		Rb, Ra						Rb = Ra
+li		Rb, Imed					Rb = Imed
+move	Ra, Rb						Ra = Rb
+mult	Rd, Rs, Rt					Rd = Rs * Rt
+multi	Rd, Rs, Imed				Rd = Rs - Imed
+neg		Rd, Rs						Rd = -Rs - OK
+not		Rd, Rs						Rd = NOT Rs
+or		Rd, Rs, Rt					Rd = Rs OR Rt
+ori		Rd, Rs, Imed				Rd = Rs OR Imed
+sll		Rd, Rs, Num					Rd = Rs << Num(times)
+slr		Rd, Rs, Num					Rd = Rs >> Num(times)
+st		Rb, Ra						Ra = Rb
+sub		Rd, Rs, Rt					Rd = Rs - Rt
+subi	Rt, Rs, Imed				Rt = Rs - Imed

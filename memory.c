@@ -66,9 +66,10 @@ void set_address(list *llist, list *olist, int lcount, int ocount, memory *mem) 
 					}
 				}
 				break;
+			} else {
+				break;
+				flag = 1;
 			}
-			flag = 1;
-			break;
 		}
 		if(flag) {
 			yyerror("Inexistent label called by function.");

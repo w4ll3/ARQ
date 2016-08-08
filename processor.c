@@ -10,9 +10,10 @@ int search = 0;
 int stall = 1;
 int branch = 1;
 
+
 void fetch(memory *mem, line *li, int *pc, int *ic) {
 	int count = 0;
-	while (count != search && ic && branch) {
+	while (count != search && *ic) {
 		putIn(mem -> data[mem -> size - *pc - 1], li);
 		*ic -= 1;
 		*pc += 1;
@@ -21,9 +22,8 @@ void fetch(memory *mem, line *li, int *pc, int *ic) {
 }
 
 void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
-	if(!isEmpty(li) && stall) {
-		printf("Stalled\n");
-		stall = 0;
+	if(stall && isEmpty(li)) {
+		printf("Empty line.\n\n");
 	} else {
 		char *inst = li -> beggin -> data;
 		int opp = binary_to_decimal(inst, 0, 5);
@@ -36,8 +36,7 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
 					set_rs(rs, rs_id, REG_2, inst, opp, reg);
-					printf("%d | %d\n", rs_id, opp);
-					inst = putOut(li);
+					putOut(li);
 				} else
 					stall = 0;
 				break;
@@ -52,9 +51,8 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 			case SLR: {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
-					printf("%d | %d\n", rs_id, opp);
 					set_rs(rs, rs_id, REG_3, inst, opp, reg);
-					inst = putOut(li);
+					putOut(li);
 				} else
 					stall = 0;
 				break;
@@ -63,8 +61,7 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
 					set_rs(rs, rs_id, REG_1I, inst, opp, reg);
-					printf("%d | %d\n", rs_id, opp);
-					inst = putOut(li);
+					putOut(li);
 				} else
 					stall = 0;
 				break;
@@ -76,8 +73,7 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
 					set_rs(rs, rs_id, REG_1L, inst, opp, reg);
-					printf("%d | %d\n", rs_id, opp);
-					inst = putOut(li);
+					putOut(li);
 					branch = 0;
 				} else
 					stall = 0;
@@ -91,9 +87,8 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 			case ORI: {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
-					printf("%d | %d\n", rs_id, opp);
 					set_rs(rs, rs_id, REG_2I, inst, opp, reg);
-					inst = putOut(li);
+					putOut(li);
 				} else
 					stall = 0;
 				break;
@@ -107,8 +102,7 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
 					set_rs(rs, rs_id, REG_2L, inst, opp, reg);
-					printf("%d | %d\n", rs_id, opp);
-					inst = putOut(li);
+					putOut(li);
 					branch = 0;
 				} else
 					stall = 0;
@@ -118,8 +112,7 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 				int rs_id = empty_rs(rs, opp);
 				if(rs_id != EMPTY_RS) {
 					set_rs(rs, rs_id, REG_2L, inst, opp, reg);
-					printf("%d | %d\n", rs_id, opp);
-					inst = putOut(li);
+					putOut(li);
 					branch = 0;
 				} else
 					stall = 0;
@@ -129,18 +122,41 @@ void issue(int *pc, line *li, reserve_station *rs, reg_bank *reg) {
 	}
 }
 
-void execute(int *pc, reserve_station *rs) {
+void execute(int *pc, reserve_station *rs, fu_unit *fu) {
 	for(int i = 0; i < rs_total; i++) {
 		if(rs[i].busy != EMPTY_RS) {
 			int busy = rs[i].id;
-			if(rs[busy].qj == -1 || rs[busy].qk == -1)
-				printf("cebola\n");
-				//cdb(pc, rs);
+			if(rs[busy].qj != -1)
+				cdb(pc, rs, rs[busy].qj, fu, 0);
+			else if(rs[busy].qk != -1)
+				cdb(pc, rs, rs[busy].qk, fu, 1);
+			if(rs[busy].qj != -1 || rs[busy].qk != -1) continue;
+			int fu_id = find_fu(busy, fu);
+			if(fu_id == NOT_RUNNING) {
+				fu_id = empty_fu(fu, rs[busy].op);
+				fu[fu_id].cicles = cicles[rs[busy].op];
+				fu[fu_id].rs = busy;
+				fu[fu_id].result = get_result(rs[busy].op, rs[busy].vj, rs[busy].vk);
+			} else {
+				fu[fu_id].cicles -= 1;
+			}
 		} else {
 			continue;
 		}
 	}
 }
 
-void cdb(int *pc, reserve_station *rs) {
+void cdb(int *pc, reserve_station *rs, int id, fu_unit *fu, int flag) {
+	int fu_id = find_fu(id, fu);
+	if(fu_id != NOT_RUNNING) {
+		if(fu[fu_id].cicles == 0) {
+			if(!flag) {
+				rs[id].vj = rs[rs[id].qj].vj;
+				rs[id].qj = -1;
+			} else {
+				rs[id].vk = rs[rs[id].qk].vk;
+				rs[id].qk = -1;
+			}
+		}
+	}
 }

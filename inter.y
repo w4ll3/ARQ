@@ -12,9 +12,7 @@
 	memory *mem;
 	list *llist, *olist;
 	line *iline;
-	sum_unit *sum_fu;
-	div_unit *div_fu;
-	mult_unit *mult_fu;
+	fu_unit *fu;
 	reserve_station *rs;
 	reg_bank *regi;
 
@@ -64,9 +62,7 @@
 		RE_MUL EQUAL VALUE EOL
 		MEM_SIZE EQUAL VALUE EOL {
 			mem = initiate_mem($43);
-			sum_fu = initiate_sfu($3);
-			div_fu = initiate_dfu($7);
-			mult_fu = initiate_mfu($11);
+			fu = initiate_fu($7, $11, $15);
 			rs = initiate_rs($27, $31, $35, $39);
 			regi = initiate_breg();
 			search = $15;
@@ -172,53 +168,27 @@ int yyerror(const char *ptr) {
 };
 
 int main(int argc, char **argv) {
+	FILE *input = fopen(argv[1], "r");
+	yyrestart(input);
 	llist = initialize_list();
 	olist = initialize_list();
 	yyparse();
 	set_address(llist, olist, lcount, ocount, mem);
 	iline = initiate();
 	print_mem(*mem);
-	for(int i = 0; i < 2; i++)
-		fetch(mem, iline, &pc, &ic);
-	for(int i = 0; i < 9; i++)
+	printf("Press ENTER to continue...");
+	getchar();
+	int clock = 0;
+	do {
+		printf("\n\nClock #%d\n\n", clock);
+		execute(&pc, rs, fu);
 		issue(&pc, iline, rs, regi);
-	show_rs(rs);
-	execute(&pc, rs);
-	show_rs(rs);
+		fetch(mem, iline, &pc, &ic);
+		showLine(iline);
+		show_rs(rs);
+		printf("Press ENTER to continue...");
+		getchar();
+		clock++;
+	} while(1);
 	return 0;
 }
-
-/*
-	.text
-		add		Rd, Rs, Rt					Rd = Rs + Rt
-		addi	Rt, Rs, Imed				Rt = Rs + Imed
-		and		Rd, Rs, Rt					Rd = Rs AND Rt
-		andi	Rt, Rs, Imed				Rt = Rs NOT Imed
-		b		label						pc = label
-		beq		Rs, Rt, label				Rs == Rt -> pc <- label
-		beqz	Rs, label					Rs == 0 -> pc <- label
-		bgt		Rs, Rt, label				Rs > Rt -> pc <- label
-		bge		Rs, Rt, label				Rs >= Rt -> pc <- label
-		bgtz	Rs, label					Rs > 0 -> pc <- label
-		blt		Rs, Rt, label				Rs < Rt -> pc <- label
-		ble		Rs, Rt, label				Rs <= Rt -> pc <- label
-		blez	Rs, label					Rs <= 0 -> pc <- label
-		bne		Rs, Rt, label				Rs != Rt -> pc <- label
-		bnez	Rs, label					Rs != 0 -> pc <- label
-		div		Rd, Rs, Rt					Rd = Rs / Rt
-		divi	Rt, Rs, Imed				Rt = Rs / Imed
-		ld		Rb, Ra						Rb = Ra
-		li		Rb, Imed					Rb = Imed
-		move	Ra, Rb						Ra = Rb
-		mult	Rd, Rs, Rt					Rd = Rs * Rt
-		multi	Rd, Rs, Imed				Rd = Rs - Imed
-		neg		Rd, Rs						Rd = -Rs
-		not		Rd, Rs						Rd = NOT Rs
-		or		Rd, Rs, Rt					Rd = Rs OR Rt
-		ori		Rd, Rs, Imed				Rd = Rs OR Imed
-		sll		Rd, Rs, Num					Rd = Rs << Num(times)
-		slr		Rd, Rs, Num					Rd = Rs >> Num(times)
-		st		Rb, Ra						Ra = Rb
-		sub		Rd, Rs, Rt					Rd = Rs - Rt
-		subi	Rt, Rs, Imed				Rt = Rs - Imed
-*/

@@ -144,7 +144,6 @@ int busy_rs(reserve_station *rs) {
 void set_rs(reserve_station *rs, int id, int type, char *inst, int op, reg_bank *reg) {
 	switch(type) {
 		case REG_1I: {
-
 			break;
 		}
 		case REG_1L: {
@@ -178,8 +177,9 @@ void set_rs(reserve_station *rs, int id, int type, char *inst, int op, reg_bank 
 			reg[reg_id].qi = id;
 
 			reg_id = binary_to_decimal(inst, 11, 15);
-			if(reg[reg_id].qi == AVAILABLE)
+			if(reg[reg_id].qi == AVAILABLE) {
 				rs[id].vk = binary_to_decimal(reg[reg_id].data, 0, 31);
+			}
 			else
 				rs[id].qk = reg[reg_id].qi;
 			break;
@@ -232,7 +232,6 @@ void set_rs(reserve_station *rs, int id, int type, char *inst, int op, reg_bank 
 			rs[id].busy = 1;
 			rs[id].a = -1;
 			int reg_id = binary_to_decimal(inst, 11, 15);
-			printf("reg_id %d\n", reg_id);
 			if(reg[reg_id].qi == AVAILABLE) {
 				rs[id].vj = binary_to_decimal(reg[reg_id].data, 0, 31);
 			} else {
@@ -240,7 +239,6 @@ void set_rs(reserve_station *rs, int id, int type, char *inst, int op, reg_bank 
 			}
 
 			reg_id = binary_to_decimal(inst, 16, 20);
-			printf("reg_id %d\n", reg_id);
 			if(reg[reg_id].qi == AVAILABLE) {
 				rs[id].vk = binary_to_decimal(reg[reg_id].data, 0, 31);
 			} else {

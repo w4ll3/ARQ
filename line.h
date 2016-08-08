@@ -24,7 +24,7 @@ void showLast(line li);
 
 int showSize(line li);
 
-char *putOut(line *line);
+void putOut(line *line);
 
 void clearLine(line *line);
 
